@@ -14,4 +14,13 @@ public class ItemMapper {
         );
     }
 
+    public Item toItem(ItemDto itemDTO) {
+        return new Item(
+                itemDTO.getName(),
+                itemDTO.getDescription(),
+                itemDTO.getAvailable(),
+                itemDTO.getOwner()
+        );
+    }
+
 }
