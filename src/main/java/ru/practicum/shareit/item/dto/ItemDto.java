@@ -1,7 +1,7 @@
 package ru.practicum.shareit.item.dto;
 
 import lombok.Data;
-import ru.practicum.shareit.user.exception.model.User;
+import ru.practicum.shareit.user.model.User;
 
 /**
  * // TODO .

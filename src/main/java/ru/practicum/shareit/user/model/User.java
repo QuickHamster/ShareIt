@@ -1,11 +1,15 @@
-package ru.practicum.shareit.user.exception.model;
+package ru.practicum.shareit.user.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * // TODO .
@@ -18,13 +22,17 @@ public class User {
     private Long Id; // уникальный идентификатор пользователя
 
     @NotBlank(message = "Name cannot be blank")
+    @Size(max = 100, message = "Name too long!")
     private String name; // имя или логин пользователя
 
+    @NotBlank(message = "Email cannot be blank")
     @Email(message = "Email has to be correct")
     private String email; // адрес электронной почты (уникальный)
 
-   /* public User(Long id, String name, String email) {
-        this.name = name;
-        this.email = email;
-    }*/
+    public Map<String, Object> toMap() {
+        Map<String, Object> values = new HashMap<>();
+        values.put("name", name);
+        values.put("email", email);
+        return values;
+    }
 }

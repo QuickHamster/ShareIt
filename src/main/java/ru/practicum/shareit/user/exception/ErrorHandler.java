@@ -11,7 +11,7 @@ import java.util.Map;
 public class ErrorHandler {
 
     @ExceptionHandler
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseStatus(HttpStatus.CONFLICT)
     public Map<String, Integer> handleValidationException(final ValidationException e) {
         return Map.of(e.getMessage(), e.hashCode());
     }

@@ -1,6 +1,7 @@
 package ru.practicum.shareit.user.repo;
 
-import ru.practicum.shareit.user.exception.model.User;
+import ru.practicum.shareit.user.dto.UserDto;
+import ru.practicum.shareit.user.model.User;
 
 import java.util.List;
 
