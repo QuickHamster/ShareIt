@@ -7,19 +7,23 @@ public class ItemMapper {
 
     public static ItemDto toItemDto(Item item) {
         return new ItemDto(
+                item.getId(),
                 item.getName(),
                 item.getDescription(),
                 item.isAvailable(),
-                item.getRequest() != null ? item.getRequest().getId() : null
+                item.getOwner(),
+                item.getRequest() != null ? item.getRequest() : null
         );
     }
 
-    public Item toItem(ItemDto itemDTO) {
+    public static Item toItem(ItemDto itemDTO) {
         return new Item(
+                itemDTO.getId(),
                 itemDTO.getName(),
                 itemDTO.getDescription(),
                 itemDTO.getAvailable(),
-                itemDTO.getOwner()
+                itemDTO.getOwner(),
+                itemDTO.getRequest()
         );
     }
 

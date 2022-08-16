@@ -1,9 +1,7 @@
 package ru.practicum.shareit.user.repo;
 
 import org.springframework.stereotype.Component;
-import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.exception.NotFoundException;
-import ru.practicum.shareit.user.exception.ValidationException;
 import ru.practicum.shareit.user.model.User;
 
 import java.util.*;
@@ -28,9 +26,6 @@ public class InMemoryUserRepositoryImpl implements UserRepository {
 
     @Override
     public User addUser(User user) {
-        if (users.values().stream().anyMatch(p -> p.getEmail().equals(user.getEmail()))) {
-            throw new ValidationException(String.format("Пользователь с email %s уже существует.", user.getEmail()));
-        }
         user.setId(ID_GENERATOR.incrementAndGet());
         users.put(user.getId(), user);
         return user;

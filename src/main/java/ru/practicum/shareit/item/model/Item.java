@@ -1,6 +1,7 @@
 package ru.practicum.shareit.item.model;
 
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import ru.practicum.shareit.request.ItemRequest;
 import ru.practicum.shareit.user.model.User;
@@ -10,6 +11,7 @@ import ru.practicum.shareit.user.model.User;
  */
 
 @Data // Аннотация  добавит геттеры и сеттеры, а также методы toString(), equals(User other) и hashCode()
+@AllArgsConstructor // будет сгенерирован конструктор с одним параметром для каждого поля класса
 public class Item {
     private Long Id; // уникальный идентификатор вещи
     private String name; // краткое название
@@ -17,14 +19,6 @@ public class Item {
     private Boolean available; // статус о том, доступна или нет вещь для аренды
     private User owner; // владелец вещи
     private ItemRequest request; // если вещь была создана по запросу другого пользователя, то в этом поле будет храниться ссылка на соответствующий запрос
-
-    public Item(String name, String description, Boolean available, User owner) {
-        this.name = name;
-        this.description = description;
-        this.available = available;
-        this.owner = owner;
-        //this.request = request;
-    }
 
     public boolean isAvailable() {
         return available;

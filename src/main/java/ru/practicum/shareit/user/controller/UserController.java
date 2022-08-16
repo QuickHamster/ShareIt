@@ -3,7 +3,6 @@ package ru.practicum.shareit.user.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.shareit.user.UserMapper;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.service.UserServiceImpl;
@@ -21,7 +20,7 @@ import java.util.List;
 @RequestMapping(path = "/users")
 public class UserController {
     private final UserServiceImpl userService;
-    public UserController(UserServiceImpl userService, UserMapper userMapper) {
+    public UserController(UserServiceImpl userService) {
         this.userService = userService;
     }
 
@@ -32,15 +31,15 @@ public class UserController {
     }
 
     @PostMapping
-    public UserDto addUser(@Valid @RequestBody User user) {
-        log.info("Добавляется пользователь {}.", user.getName());
-        return userService.addUser(user);
+    public UserDto addUser(@Valid @RequestBody UserDto userDto) {
+        log.info("Добавляется пользователь {}.", userDto.getName());
+        return userService.addUser(userDto);
     }
 
     @PutMapping
-    public UserDto changeUser(@Valid @RequestBody User user) {
-        log.info("Изменение пользователя {}.", user.getName());
-        return userService.changeUser(UserMapper.toUserDto(user), user.getId());
+    public UserDto changeUser(@Valid @RequestBody UserDto userDto) {
+        log.info("Изменение пользователя {}.", userDto.getName());
+        return userService.changeUser(userDto, userDto.getId());
     }
 
     @DeleteMapping("/{id}")

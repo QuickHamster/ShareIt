@@ -1,2 +1,2 @@
 # java-shareit
-Template repository for Shareit project.
+Shareit - это сервис позволяющий пользователям находить, сдавать и брать в аренду вещи.

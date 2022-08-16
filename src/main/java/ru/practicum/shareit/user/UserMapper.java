@@ -15,7 +15,7 @@ public class UserMapper {
         );
     }
     //из dto в entity
-    public User toUser(UserDto userDTO) {
+    public static User toUser(UserDto userDTO) {
         return new User(
                 userDTO.getId(),
                 userDTO.getName(),

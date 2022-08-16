@@ -1,25 +1,32 @@
 package ru.practicum.shareit.item.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NonNull;
+import ru.practicum.shareit.request.ItemRequest;
 import ru.practicum.shareit.user.model.User;
 
-/**
- * // TODO .
- */
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
-@Data
+@Data // Аннотация  добавит геттеры и сеттеры, а также методы toString(), equals(User other) и hashCode()
+@AllArgsConstructor // будет сгенерирован конструктор с одним параметром для каждого поля класса
 public class ItemDto {
+    @EqualsAndHashCode.Exclude
+    private Long id;
+
+    @NotBlank(message = "Name cannot be blank")
+    @Size(max = 100, message = "Name too long!")
     private String name;
+
+    @NotBlank(message = "Description cannot be blank")
+    @Size(max = 1000, message = "Description too long!")
     private String description;
+
+    @NonNull
     private Boolean available;
+
     private User owner;
-    private Long request;
-
-
-    public ItemDto(String name, String description, Boolean available, Long request) {
-        this.name = name;
-        this.description = description;
-        this.available = available;
-        this.request = request;
-    }
+    private ItemRequest request;
 }

@@ -1,7 +1,6 @@
 package ru.practicum.shareit.booking;
 
 import lombok.Data;
-import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.model.User;
 
 import java.time.LocalDateTime;
@@ -14,7 +13,7 @@ public class Booking {
     private Long Id; // уникальный идентификатор бронирования
     private LocalDateTime start; // дата и время начала бронирования
     private LocalDateTime end; // дата и время конца бронирования
-    private Item item; // вещь, которую пользователь бронирует
+    private ru.practicum.shareit.item.model.Item item; // вещь, которую пользователь бронирует
     private User booker; // пользователь, который осуществляет бронирование
     private Long status; // статус бронирования
 }
