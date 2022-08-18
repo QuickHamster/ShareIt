@@ -9,7 +9,7 @@ import lombok.EqualsAndHashCode;
 public class User {
 
     @EqualsAndHashCode.Exclude
-    private Long Id; // уникальный идентификатор пользователя
+    private Long id; // уникальный идентификатор пользователя
     private String name; // имя или логин пользователя
     private String email; // адрес электронной почты (уникальный)
 }

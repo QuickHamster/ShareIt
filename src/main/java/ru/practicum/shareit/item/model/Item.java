@@ -9,7 +9,7 @@ import ru.practicum.shareit.user.model.User;
 @Data // Аннотация  добавит геттеры и сеттеры, а также методы toString(), equals(User other) и hashCode()
 @AllArgsConstructor // будет сгенерирован конструктор с одним параметром для каждого поля класса
 public class Item {
-    private Long Id; // уникальный идентификатор вещи
+    private Long id; // уникальный идентификатор вещи
     private String name; // краткое название
     private String description; // развёрнутое описание
     private Boolean available; // статус о том, доступна или нет вещь для аренды

@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
  */
 @Data // Аннотация  добавит геттеры и сеттеры, а также методы toString(), equals(User other) и hashCode()
 public class Booking {
-    private Long Id; // уникальный идентификатор бронирования
+    private Long id; // уникальный идентификатор бронирования
     private LocalDateTime start; // дата и время начала бронирования
     private LocalDateTime end; // дата и время конца бронирования
     private ru.practicum.shareit.item.model.Item item; // вещь, которую пользователь бронирует

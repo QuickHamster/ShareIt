@@ -10,10 +10,6 @@ import ru.practicum.shareit.user.service.UserServiceImpl;
 import javax.validation.Valid;
 import java.util.List;
 
-/**
- * // TODO .
- */
-
 @Slf4j
 @Validated
 @RestController
