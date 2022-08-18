@@ -3,11 +3,11 @@ package ru.practicum.shareit.item.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NonNull;
 import ru.practicum.shareit.request.ItemRequest;
 import ru.practicum.shareit.user.model.User;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Data // Аннотация  добавит геттеры и сеттеры, а также методы toString(), equals(User other) и hashCode()
@@ -24,7 +24,7 @@ public class ItemDto {
     @Size(max = 1000, message = "Description too long!")
     private String description;
 
-    @NonNull
+    @NotNull
     private Boolean available;
 
     private User owner;

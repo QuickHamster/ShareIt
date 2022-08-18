@@ -20,6 +20,7 @@ import java.util.List;
 @RequestMapping(path = "/users")
 public class UserController {
     private final UserServiceImpl userService;
+
     public UserController(UserServiceImpl userService) {
         this.userService = userService;
     }
@@ -58,6 +59,7 @@ public class UserController {
     public UserDto patchResource(
             @PathVariable long id,
             @RequestBody UserDto userDto) {
+        log.info("Изменение пользователя {}.", id);
         return userService.changeUser(userDto, id);
     }
 

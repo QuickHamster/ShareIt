@@ -7,7 +7,7 @@ import ru.practicum.shareit.user.model.User;
 import java.time.LocalDateTime;
 
 /**
- * // TODO .
+ * // TODO . Будет реализовано в последующих спринтах
  */
 @Data // Аннотация  добавит геттеры и сеттеры, а также методы toString(), equals(User other) и hashCode()
 @AllArgsConstructor // будет сгенерирован конструктор с одним параметром для каждого поля класса

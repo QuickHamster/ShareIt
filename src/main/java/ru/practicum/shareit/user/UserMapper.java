@@ -14,6 +14,7 @@ public class UserMapper {
                 user.getEmail()
         );
     }
+
     //из dto в entity
     public static User toUser(UserDto userDTO) {
         return new User(
