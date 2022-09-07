@@ -1,4 +1,3 @@
-/*
 package ru.practicum.shareit.item.controller;
 
 import lombok.extern.slf4j.Slf4j;
@@ -9,7 +8,7 @@ import ru.practicum.shareit.item.service.ItemServiceImpl;
 
 import javax.validation.Valid;
 import java.util.List;
-/*
+
 @Slf4j
 @RestController
 @RequestMapping("/items")
@@ -69,4 +68,3 @@ public class ItemController {
         return itemService.searchItems(text);
     }
 }
-*/

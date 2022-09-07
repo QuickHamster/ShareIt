@@ -1,12 +1,13 @@
 package ru.practicum.shareit.user.repo;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import ru.practicum.shareit.user.model.User;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface UserRepository {
-    List<User> findAll();
+public interface UserRepository extends JpaRepository<User, Long> {
+   /* List<User> findAll();
 
     void deleteAll();
 
@@ -16,7 +17,7 @@ public interface UserRepository {
 
     Optional<User> findById(long id);
 
-    long deleteById(long id);
+    long deleteById(long id);*/
 
 
 }

@@ -1,3 +1,4 @@
+/*
 package ru.practicum.shareit.user.repo;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -7,3 +8,4 @@ import ru.practicum.shareit.user.model.User;
 @Repository
 public interface JpaUserRepository extends JpaRepository<User, Long>, UserRepository{
 }
+*/

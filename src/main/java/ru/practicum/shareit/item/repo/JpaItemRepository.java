@@ -1,3 +1,4 @@
+/*
 package ru.practicum.shareit.item.repo;
 
 
@@ -9,7 +10,8 @@ import ru.practicum.shareit.item.model.Item;
 import java.util.List;
 @Repository
 public interface JpaItemRepository extends JpaRepository<Item, Long>, ItemRepository {
-    /*List<Item> getAll(long id);
+    */
+/*List<Item> getAll(long id);
 
     void deleteAll();
 
@@ -19,6 +21,8 @@ public interface JpaItemRepository extends JpaRepository<Item, Long>, ItemReposi
 
     Item findItemById(long id);
 
-    long deleteItem(long id);*/
+    long deleteItem(long id);*//*
+
 
 }
+*/
