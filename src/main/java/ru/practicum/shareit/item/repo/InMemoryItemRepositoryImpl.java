@@ -11,9 +11,9 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 @Component
-public class InMemoryItemRepositoryImpl implements ItemRepository {
+public class InMemoryItemRepositoryImpl {// implements ItemRepository {
 
-    private static final AtomicLong ID_GENERATOR = new AtomicLong();
+  /*  private static final AtomicLong ID_GENERATOR = new AtomicLong();
 
     private final Map<Long, Item> items = new LinkedHashMap<>();
 
@@ -65,5 +65,5 @@ public class InMemoryItemRepositoryImpl implements ItemRepository {
                 .filter(p -> (p.getName().toLowerCase().contains(text.toLowerCase()) || p.getDescription().toLowerCase()
                         .contains(text.toLowerCase())) && p.isAvailable())
                 .collect(Collectors.toList());
-    }
+    }*/
 }
