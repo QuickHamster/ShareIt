@@ -1,12 +1,12 @@
+/*
 package ru.practicum.shareit.item.service;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import ru.practicum.shareit.item.ItemMapper;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.Item;
-import ru.practicum.shareit.item.repo.ItemRepository;
+import ru.practicum.shareit.item.repo.JpaItemRepository;
 import ru.practicum.shareit.user.exception.NotFoundException;
 import ru.practicum.shareit.user.repo.UserRepository;
 
@@ -16,10 +16,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 public class ItemServiceImpl implements ItemService {
-    private final ItemRepository itemRepository;
+    private final JpaItemRepository itemRepository;
     private final UserRepository userRepository;
+    public ItemServiceImpl(JpaItemRepository itemRepository, UserRepository userRepository) {
+        this.itemRepository = itemRepository;
+        this.userRepository = userRepository;
+    }
 
     @Override
     public List<Item> getAllItems(long userId) {
@@ -90,3 +93,4 @@ public class ItemServiceImpl implements ItemService {
         } else return new ArrayList<>();
     }
 }
+*/

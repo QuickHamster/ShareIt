@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
-@Component
+//@Component
 public class InMemoryItemRepositoryImpl {// implements ItemRepository {
 
   /*  private static final AtomicLong ID_GENERATOR = new AtomicLong();

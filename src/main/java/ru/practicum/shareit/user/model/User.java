@@ -20,4 +20,7 @@ public class User {
     private String name; // имя или логин пользователя
     private String email; // адрес электронной почты (уникальный)
 
+    public User() {
+
+    }
 }

@@ -28,5 +28,5 @@ public class ItemDto {
     private Boolean available;
 
     private User owner;
-    private ItemRequest request;
+   // private ItemRequest request;
 }

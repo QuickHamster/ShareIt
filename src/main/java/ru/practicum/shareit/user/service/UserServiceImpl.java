@@ -1,10 +1,10 @@
 package ru.practicum.shareit.user.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import ru.practicum.shareit.user.UserMapper;
 import ru.practicum.shareit.user.dto.UserDto;
+import ru.practicum.shareit.user.exception.NotFoundException;
 import ru.practicum.shareit.user.exception.ValidationException;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.repo.UserRepository;
@@ -16,7 +16,6 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
-    @Autowired
     public UserServiceImpl(UserRepository userStorage) {
         this.userRepository = userStorage;
     }
@@ -33,10 +32,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto addUser(UserDto userDto) {
-        if (userRepository.findAll().stream().anyMatch(p -> p.getEmail().equals(userDto.getEmail()))) {
+        /*if (userRepository.findAll().stream().anyMatch(p -> p.getEmail().equals(userDto.getEmail()))) {
             throw new ValidationException(String.format("Пользователь с email %s уже существует.",
                     userDto.getEmail()));
-        }
+        }*/
         return UserMapper.toUserDto(Optional.of(userRepository.save(UserMapper.toUser(userDto))));
     }
 
@@ -64,7 +63,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto findUserById(long id) {
-        return UserMapper.toUserDto(userRepository.findById(id));
+        Optional<User> user = userRepository.findById(id);
+        if (user.isEmpty()) {
+            throw new NotFoundException(String.format("Пользователь с id %x не существует.", id));
+        }
+        return UserMapper.toUserDto(user);
     }
 
     @Override
