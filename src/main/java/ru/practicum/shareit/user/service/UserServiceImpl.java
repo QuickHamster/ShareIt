@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
             throw new ValidationException(String.format("Пользователь с email %s уже существует.",
                     userDto.getEmail()));
         }*/
-        return UserMapper.toUserDto(Optional.of(userRepository.save(UserMapper.toUser(userDto))));
+        return UserMapper.toUserDto(userRepository.save(UserMapper.toUser(userDto)));
     }
 
     @Override
@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService {
 
         user = Optional.of(userRepository.save(user.get()));
 
-        return UserMapper.toUserDto(user);
+        return UserMapper.toUserDto(user.get());
     }
 
     @Override
@@ -67,7 +67,7 @@ public class UserServiceImpl implements UserService {
         if (user.isEmpty()) {
             throw new NotFoundException(String.format("Пользователь с id %x не существует.", id));
         }
-        return UserMapper.toUserDto(user);
+        return UserMapper.toUserDto(user.get());
     }
 
     @Override
