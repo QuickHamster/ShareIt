@@ -1,3 +1,4 @@
+/*
 package ru.practicum.shareit.user.repo;
 
 import org.springframework.stereotype.Component;
@@ -10,7 +11,8 @@ import java.util.concurrent.atomic.AtomicLong;
 @Component
 public class InMemoryUserRepositoryImpl{// implements UserRepository {
 
-   /* private static final AtomicLong ID_GENERATOR = new AtomicLong();
+   */
+/* private static final AtomicLong ID_GENERATOR = new AtomicLong();
 
     private final Map<Long, User> users = new LinkedHashMap<>();
 
@@ -53,5 +55,7 @@ public class InMemoryUserRepositoryImpl{// implements UserRepository {
             users.remove(id);
             return id;
         } else throw new NotFoundException(String.format("Пользователь # %d не найден.", id));
-    }*/
+    }*//*
+
 }
+*/
