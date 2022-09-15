@@ -2,9 +2,11 @@ package ru.practicum.shareit.item.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.booking.repo.BookingRepository;
 import ru.practicum.shareit.item.ItemMapper;
 import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.item.dto.ItemOutputDto;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.repo.ItemRepository;
 import ru.practicum.shareit.exception.NotFoundException;
@@ -42,7 +44,7 @@ public class ItemServiceImpl implements ItemService {
                 .findFirst()
                 .orElseThrow(() -> new NotFoundException(String.format("Пользователь с id %d не существует.", userId)));
         itemDto.setOwner(userRepository.findById(userId).get());
-        return ItemMapper.toItemDto(Optional.of(itemRepository.save(ItemMapper.toItem(itemDto))));
+        return ItemMapper.toItemDto(itemRepository.save(ItemMapper.toItem(itemDto)));
     }
 
     @Override
@@ -73,16 +75,18 @@ public class ItemServiceImpl implements ItemService {
 
         item = Optional.of(itemRepository.save(item.get()));
 
-        return ItemMapper.toItemDto(item);
+        return ItemMapper.toItemDto(item.get());
     }
 
     @Override
-    public ItemDto findItemById(long id) {
+    public ItemOutputDto findItemById(long id) {
         Optional<Item> item = itemRepository.findById(id);
         if (item.isEmpty()) {
             throw new NotFoundException(String.format("Вещи с id %x не существует.", id));
         }
-        return ItemMapper.toItemDto(item);
+        List<Booking> bookingsItem = bookingRepository.getBookingsByItem(id);
+        ItemOutputDto itemOutputDto = ItemMapper.toItemOutputDto(item.get());
+        return itemOutputDto;
     }
 
     @Override

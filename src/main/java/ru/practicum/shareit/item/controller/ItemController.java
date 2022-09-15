@@ -3,6 +3,7 @@ package ru.practicum.shareit.item.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.item.dto.ItemOutputDto;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.service.ItemServiceImpl;
 
@@ -48,7 +49,7 @@ public class ItemController {
     }
 
     @GetMapping("/{id}")
-    public ItemDto getItem(@PathVariable Long id) {
+    public ItemOutputDto getItem(@PathVariable Long id) {
         log.info("Получение вещи id = {}.", id);
         return itemService.findItemById(id);
     }

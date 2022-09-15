@@ -1,4 +1,4 @@
-DROP TABLE comments, bookings, items, requests, users;
+
 
 CREATE TABLE IF NOT EXISTS users
 (
@@ -57,3 +57,4 @@ CREATE TABLE IF NOT EXISTS comments
     CONSTRAINT fk_comments_to_users FOREIGN KEY (author_id) REFERENCES users (id),
     CONSTRAINT pk_comment PRIMARY KEY (id)
 );
+
