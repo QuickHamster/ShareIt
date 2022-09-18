@@ -7,7 +7,7 @@ import ru.practicum.shareit.item.model.Item;
 import java.util.List;
 
 public interface ItemService {
-    List<Item> getAllItems(long userId);
+    List<ItemOutputDto> getAllItems(long userId);
 
     void deleteAll();
 
@@ -15,7 +15,7 @@ public interface ItemService {
 
     ItemDto changeItem(ItemDto itemDto, long id, long userId);
 
-    ItemOutputDto findItemById(long id);
+    ItemOutputDto findItemById(long userId, long id);
 
     long deleteItem(long id);
 

@@ -145,9 +145,15 @@ public class BookingServiceImpl implements BookingService {
             case ALL:
                 return bookingRepository.getAllBookings(userId);
             case FUTURE:
+                return bookingRepository.getBookingsByStateFuture(userId, LocalDateTime.now());
+            case CURRENT:
+                return bookingRepository.getBookingsByStateCurrent(userId, LocalDateTime.now());
+            case PAST:
                 LocalDateTime localDateTime = LocalDateTime.now();
-                List<Booking> bookingList = bookingRepository.getBookingsByStateFuture(userId, localDateTime);
+                List<Booking> bookingList = bookingRepository.getBookingsByStatePast(userId, localDateTime);
                 return bookingList;
+            case REJECTED:
+                return bookingRepository.getBookingsByState(userId, BookingStatus.REJECTED);
             case WAITING:
                 return bookingRepository.getBookingsByState(userId, BookingStatus.WAITING);
             default:
@@ -176,54 +182,16 @@ public class BookingServiceImpl implements BookingService {
                 return bookingRepository.getBookingsForAllItemsUser(userId);
             case FUTURE:
                 return bookingRepository.getBookingsForAllItemsUserByStateFuture(userId, LocalDateTime.now());
+            case CURRENT:
+                return bookingRepository.getBookingsForAllItemsUserByStateCurrent(userId, LocalDateTime.now());
+            case PAST:
+                return bookingRepository.getBookingsForAllItemsUserByStatePast(userId, LocalDateTime.now());
+            case REJECTED:
+                return bookingRepository.getBookingsForAllItemsUserByState(userId, BookingStatus.REJECTED);
             case WAITING:
                 return bookingRepository.getBookingsForAllItemsUserByState(userId, BookingStatus.WAITING);
             default:
                 throw new IncorrectStatusException(String.format("Unknown state: %s", state));
         }
     }
-/*
-
-
-
-
-    @Override
-    //@Transactional
-    public BookingDto add(long userId, BookingDto bookingDto) {
-        //bookingDto.setBookerId(userId);
-        bookingDto.setStatus(BookingStatus.WAITING);
-        return BookingMapper.toBookingDto(bookingRepository.save(BookingMapper.toBooking(bookingDto)));
-        Booking booking = BookingMapper.toBooking(bookingDto,userId, bookingDto.getItemId(), bookingDto.getStatus());
-        booking = bookingRepository.save(booking);
-        BookingDto bookingDto1 = BookingMapper.toBookingDto(booking);
-        return bookingDto1;
-
-    }
-
-    @Override
-    public BookingDto change(BookingDto bookingDto, Long id) {
-        return null;
-    }
-
-    @Override
-    public BookingDto findById(long id) {
-        Optional<Booking> booking = bookingRepository.findById(id);
-        if (booking.isEmpty()) {
-            throw new NotFoundException(String.format("Бронирование с id = %x не существует.", id));
-        }
-        return BookingMapper.toBookingDto(booking.get());
-    }
-
-
-
-
-
-
-
-
-
-    @Override
-    public List<Booking> getItemBookings(long userId, BookingState state) {
-        return bookingRepository.getItemBookings(userId, state);
-    }*/
 }

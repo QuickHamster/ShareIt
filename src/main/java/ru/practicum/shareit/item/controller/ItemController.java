@@ -22,7 +22,7 @@ public class ItemController {
     }
 
     @GetMapping
-    public List<Item> getAllItems(@RequestHeader(X_HEADER) long userId) {
+    public List<ItemOutputDto> getAllItems(@RequestHeader(X_HEADER) long userId) {
         log.info("Получение списка вещей пользователя id = {}.", userId);
         return itemService.getAllItems(userId);
     }
@@ -49,9 +49,10 @@ public class ItemController {
     }
 
     @GetMapping("/{id}")
-    public ItemOutputDto getItem(@PathVariable Long id) {
+    public ItemOutputDto getItem(@RequestHeader(X_HEADER) long userId,
+                                 @PathVariable long id) {
         log.info("Получение вещи id = {}.", id);
-        return itemService.findItemById(id);
+        return itemService.findItemById(userId, id);
     }
 
     @PatchMapping("/{id}")

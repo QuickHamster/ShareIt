@@ -1,4 +1,5 @@
-
+DROP TABLE comments, bookings, items, requests, users;
+DROP type status_enum;
 
 CREATE TABLE IF NOT EXISTS users
 (
@@ -58,3 +59,7 @@ CREATE TABLE IF NOT EXISTS comments
     CONSTRAINT pk_comment PRIMARY KEY (id)
 );
 
+create type status_enum as enum ('WAITING',
+    'APPROVED',
+    'REJECTED',
+    'CANCELED');
