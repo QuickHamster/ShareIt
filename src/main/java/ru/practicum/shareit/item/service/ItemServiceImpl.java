@@ -7,13 +7,19 @@ import ru.practicum.shareit.booking.model.LastBooking;
 import ru.practicum.shareit.booking.model.NextBooking;
 import ru.practicum.shareit.booking.repo.BookingRepository;
 import ru.practicum.shareit.item.ItemMapper;
+import ru.practicum.shareit.item.dto.CommentInputDto;
+import ru.practicum.shareit.item.dto.CommentOutputDto;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.ItemOutputDto;
+import ru.practicum.shareit.item.model.Comment;
 import ru.practicum.shareit.item.model.Item;
+import ru.practicum.shareit.item.repo.CommentRepository;
 import ru.practicum.shareit.item.repo.ItemRepository;
 import ru.practicum.shareit.exception.NotFoundException;
+import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.repo.UserRepository;
 
+import java.time.LocalDate;
 import java.util.*;
 
 @Service
@@ -21,10 +27,12 @@ public class ItemServiceImpl implements ItemService {
     private final ItemRepository itemRepository;
     private final UserRepository userRepository;
     private final BookingRepository bookingRepository;
-    public ItemServiceImpl(ItemRepository itemRepository, UserRepository userRepository, BookingRepository bookingRepository) {
+    private final CommentRepository commentRepository;
+    public ItemServiceImpl(ItemRepository itemRepository, UserRepository userRepository, BookingRepository bookingRepository, CommentRepository commentRepository) {
         this.itemRepository = itemRepository;
         this.userRepository = userRepository;
         this.bookingRepository = bookingRepository;
+        this.commentRepository = commentRepository;
     }
 
     //private TreeSet<Task> sortTasks = new TreeSet<Task>(new BookingComparator()); // сортированные задачи и подзадачи
@@ -144,5 +152,36 @@ public class ItemServiceImpl implements ItemService {
         if (!text.isBlank()) {
             return itemRepository.searchItems(text);
         } else return new ArrayList<>();
+    }
+
+    @Override
+    public CommentOutputDto addCommentToItem(long userId, long itemId, CommentInputDto commentInputDto) {
+        /*userRepository.findAll().stream()
+                .filter(p -> p.getId().equals(userId))
+                .findFirst()
+                .orElseThrow(() -> new NotFoundException(String.format("Пользователь с id %d не существует.", userId)));
+
+        itemRepository.findAll().stream()
+                .filter(p -> p.getId().equals(itemId))
+                .findFirst()
+                .orElseThrow(() -> new NotFoundException(String.format("Вещь с id %d не существует.", itemId)));
+*/
+        Optional<Item> item = itemRepository.findById(itemId);
+        Comment comment = new Comment();
+        if (item.isPresent()) {
+            comment.setItem(item.get());
+        } else throw new NotFoundException(String.format("Вещь с id %d не существует.", itemId));
+
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isPresent()) {
+            comment.setAuthor(user.get());
+        } else throw new NotFoundException(String.format("Пользователь с id %d не существует.", userId));
+
+        comment.setCreated(LocalDate.now());
+        comment.setText(commentInputDto.getText());
+
+        //commentRepository.save(comment);
+
+        return ItemMapper.toCommentOutputDto(commentRepository.save(comment));
     }
 }

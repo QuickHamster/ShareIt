@@ -3,21 +3,18 @@ package ru.practicum.shareit.item.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.booking.model.LastBooking;
 import ru.practicum.shareit.booking.model.NextBooking;
 import ru.practicum.shareit.item.model.Comment;
-import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.model.User;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.time.LocalDate;
 
 @Data // Аннотация  добавит геттеры и сеттеры, а также методы toString(), equals(User other) и hashCode()
 @AllArgsConstructor // будет сгенерирован конструктор с одним параметром для каждого поля класса
-public class ItemOutputDto {
+public class ItemCommentsOutputDto {
     @EqualsAndHashCode.Exclude
     private Long id;
 
@@ -38,6 +35,7 @@ public class ItemOutputDto {
 
     private LastBooking lastBooking; // дата и время последнего бронирования
 
-    //private Comment comments;
+    private String comments;
 
 }
+

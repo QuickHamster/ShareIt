@@ -61,8 +61,6 @@ public interface BookingRepository extends JpaRepository<Booking, Long>  {
 
     @Query(" select b from Booking b " +
             "where b.item.id = ?1")
-    //" select b from Booking b " +
-        //            "where b.item.id = ?1 and b.status = 'APPROVED' and b.start < now() and b.end > now() order by b.start"
     List<Booking> getBookingsByItem(long itemId);
 
     Optional<Booking> findFirstByItemOrderByEndDesc(Item item);

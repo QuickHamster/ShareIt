@@ -1,7 +1,10 @@
 package ru.practicum.shareit.item;
 
+import ru.practicum.shareit.item.dto.CommentOutputDto;
+import ru.practicum.shareit.item.dto.ItemCommentsOutputDto;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.ItemOutputDto;
+import ru.practicum.shareit.item.model.Comment;
 import ru.practicum.shareit.item.model.Item;
 
 import java.util.Optional;
@@ -31,6 +34,19 @@ public class ItemMapper {
         );
     }
 
+    public static ItemCommentsOutputDto toItemCommentsOutputDto(Item item, Comment comment) {
+        return new ItemCommentsOutputDto(
+                item.getId(),
+                item.getName(),
+                item.getDescription(),
+                item.isAvailable(),
+                item.getOwner(),
+                null,
+                null,
+                comment.getText()
+        );
+    }
+
     public static Item toItem(ItemDto itemDTO) {
         return new Item(
                 itemDTO.getId(),
@@ -42,4 +58,13 @@ public class ItemMapper {
         );
     }
 
+    public static CommentOutputDto toCommentOutputDto(Comment comment) {
+        return new CommentOutputDto(
+                comment.getId(),
+                comment.getText(),
+                comment.getItem(),
+                comment.getAuthor().getName(),
+                comment.getCreated()
+        );
+    }
 }

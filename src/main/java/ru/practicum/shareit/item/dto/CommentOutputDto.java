@@ -1,36 +1,27 @@
-package ru.practicum.shareit.item.model;
+package ru.practicum.shareit.item.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.model.User;
 
 import javax.persistence.*;
-import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
+@Data // Аннотация  добавит геттеры и сеттеры, а также методы toString(), equals(User other) и hashCode()
 @AllArgsConstructor // будет сгенерирован конструктор с одним параметром для каждого поля класса
-@NoArgsConstructor
-@Entity
-@Table(name = "comments", schema = "public")
-@Getter
-@Setter
-public class Comment {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class CommentOutputDto {
+
+    @EqualsAndHashCode.Exclude
     private Long id; // уникальный идентификатор комментария
 
-    @Size(max = 1024, message = "Comment too long!")
     private String text; // содержимое комментария
 
-    @ManyToOne()
-    @JoinColumn(name = "item_id")
     private Item item; // вещь, к которой относится комментарий
 
-    @ManyToOne()
-    @JoinColumn(name = "author_id")
-    private User author; // автор комментария
+    //private User author; // автор комментария
+    private String authorName;
 
     private LocalDate created; // дата создания комментария
 }
