@@ -17,10 +17,10 @@ import java.time.LocalDateTime;
 public class BookingOutputDto {
     private Long id;
 
-    @FutureOrPresent(message="Date cannot be in the past.")
+    @FutureOrPresent(message = "Date cannot be in the past.")
     private LocalDateTime start; // дата и время начала бронирования
 
-    @FutureOrPresent(message="Date cannot be in the past.")
+    @FutureOrPresent(message = "Date cannot be in the past.")
     private LocalDateTime end; // дата и время конца бронирования
 
     @NotNull

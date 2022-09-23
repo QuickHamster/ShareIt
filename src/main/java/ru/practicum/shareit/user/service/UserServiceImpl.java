@@ -32,10 +32,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto addUser(UserDto userDto) {
-        /*if (userRepository.findAll().stream().anyMatch(p -> p.getEmail().equals(userDto.getEmail()))) {
-            throw new ValidationException(String.format("Пользователь с email %s уже существует.",
-                    userDto.getEmail()));
-        }*/
         return UserMapper.toUserDto(userRepository.save(UserMapper.toUser(userDto)));
     }
 
@@ -43,22 +39,25 @@ public class UserServiceImpl implements UserService {
     public UserDto changeUser(UserDto userDto, Long id) {
         Optional<User> user = userRepository.findById(id);
 
-        if (StringUtils.hasLength(userDto.getName())) {
-            user.get().setName(userDto.getName());
-        }
+        if (user.isPresent()) {
 
-        if (StringUtils.hasLength(userDto.getEmail())) {
-            userRepository.findAll().forEach(existUser -> {
-                if (existUser.getEmail().equals(userDto.getEmail()))
-                    throw new ValidationException(String.format("Пользователь с email %s уже существует.",
-                            userDto.getEmail()));
-            });
-            user.get().setEmail(userDto.getEmail());
-        }
+            if (StringUtils.hasLength(userDto.getName())) {
+                user.get().setName(userDto.getName());
+            }
 
-        user = Optional.of(userRepository.save(user.get()));
+            if (StringUtils.hasLength(userDto.getEmail())) {
+                userRepository.findAll().forEach(existUser -> {
+                    if (existUser.getEmail().equals(userDto.getEmail()))
+                        throw new ValidationException(String.format("Пользователь с email %s уже существует.",
+                                userDto.getEmail()));
+                });
+                user.get().setEmail(userDto.getEmail());
+            }
 
-        return UserMapper.toUserDto(user.get());
+            user = Optional.of(userRepository.save(user.get()));
+
+            return UserMapper.toUserDto(user.get());
+        } else throw new NotFoundException(String.format("Пользователь с id %x не существует.", id));
     }
 
     @Override

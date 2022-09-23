@@ -4,17 +4,15 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import ru.practicum.shareit.booking.model.Booking;
-import ru.practicum.shareit.booking.model.BookingState;
 import ru.practicum.shareit.booking.model.BookingStatus;
 import ru.practicum.shareit.item.model.Item;
-import ru.practicum.shareit.user.model.User;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface BookingRepository extends JpaRepository<Booking, Long>  {
+public interface BookingRepository extends JpaRepository<Booking, Long> {
 
     @Query(" select b from Booking b " +
             "where b.booker.id = ?1 group by b.id order by b.start desc")
@@ -37,15 +35,16 @@ public interface BookingRepository extends JpaRepository<Booking, Long>  {
 
     @Query(value = " select b from Booking b " +
             "where b.booker.id = ?1" +
-            " and b.status = ?2") //  group by b.id order by b.start desc
+            " and b.status = ?2")
+        //  group by b.id order by b.start desc
     List<Booking> getBookingsByState(long userId, BookingStatus bookingStatus);
 
     @Query(" select b from Booking b left join Item as i on b.item.id = i.id " +
-           "where i.owner.id = ?1 group by b.id order by b.start desc")
+            "where i.owner.id = ?1 group by b.id order by b.start desc")
     List<Booking> getBookingsForAllItemsUser(long userId);
 
     @Query(" select b from Booking b left join Item as i on b.item.id = i.id " +
-           "where i.owner.id = ?1 and b.start > ?2 group by b.id order by b.start desc")
+            "where i.owner.id = ?1 and b.start > ?2 group by b.id order by b.start desc")
     List<Booking> getBookingsForAllItemsUserByStateFuture(long userId, LocalDateTime localDateTime);
 
     @Query(" select b from Booking b left join Item as i on b.item.id = i.id " +
@@ -57,12 +56,8 @@ public interface BookingRepository extends JpaRepository<Booking, Long>  {
     List<Booking> getBookingsForAllItemsUserByStatePast(long userId, LocalDateTime localDateTime);
 
     @Query(" select b from Booking b left join Item as i on b.item.id = i.id " +
-           "where i.owner.id = ?1 and b.status = ?2") //  group by b.id order by b.start desc
+            "where i.owner.id = ?1 and b.status = ?2")
     List<Booking> getBookingsForAllItemsUserByState(long userId, BookingStatus bookingStatus);
-
-    @Query(" select b from Booking b " +
-            "where b.item.id = ?1")
-    List<Booking> getBookingsByItem(long itemId);
 
     @Query(" select b from Booking b " +
             "where b.booker.id = ?1 and b.end < ?2 ")
@@ -71,5 +66,4 @@ public interface BookingRepository extends JpaRepository<Booking, Long>  {
     Optional<Booking> findFirstByItemOrderByEndDesc(Item item);
 
     Optional<Booking> findFirstByItemOrderByStartAsc(Item item);
-
 }

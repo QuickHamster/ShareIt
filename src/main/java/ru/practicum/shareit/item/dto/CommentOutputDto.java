@@ -4,9 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import ru.practicum.shareit.item.model.Item;
-import ru.practicum.shareit.user.model.User;
 
-import javax.persistence.*;
 import java.time.LocalDate;
 
 @Data // Аннотация  добавит геттеры и сеттеры, а также методы toString(), equals(User other) и hashCode()
@@ -20,8 +18,7 @@ public class CommentOutputDto {
 
     private Item item; // вещь, к которой относится комментарий
 
-    //private User author; // автор комментария
-    private String authorName;
+    private String authorName; // автор комментария
 
     private LocalDate created; // дата создания комментария
 }

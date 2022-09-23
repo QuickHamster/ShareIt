@@ -9,8 +9,6 @@ import ru.practicum.shareit.item.model.Item;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class ItemMapper {
 
@@ -20,8 +18,7 @@ public class ItemMapper {
                 item.getName(),
                 item.getDescription(),
                 item.isAvailable(),
-                item.getOwner()/*,
-                item.get().getRequest() != null ? item.get().getRequest() : null*/
+                item.getOwner()
         );
     }
 
@@ -57,8 +54,7 @@ public class ItemMapper {
                 itemDTO.getName(),
                 itemDTO.getDescription(),
                 itemDTO.getAvailable(),
-                itemDTO.getOwner()/*,
-                itemDTO.getRequest()*/
+                itemDTO.getOwner()
         );
     }
 

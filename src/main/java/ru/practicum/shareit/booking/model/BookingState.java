@@ -7,7 +7,7 @@ public enum BookingState {
     FUTURE("FUTURE"),       // будущие
     WAITING("WAITING"),     // * ожидающие подтверждения
     REJECTED("REJECTED"),   // * отклонённые
-    UNSUPPORTED_STATUS("UNSUPPORTED_STATUS");
+    UNSUPPORTED_STATUS("UNSUPPORTED_STATUS"); // неподдерживаемый статус (для тестов Postman)
     private final String title;
 
     BookingState(String title) {

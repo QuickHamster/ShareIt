@@ -5,8 +5,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import ru.practicum.shareit.booking.model.LastBooking;
 import ru.practicum.shareit.booking.model.NextBooking;
-import ru.practicum.shareit.item.model.Comment;
-import ru.practicum.shareit.user.model.User;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -30,14 +28,12 @@ public class ItemCommentsOutputDto {
     @NotNull
     private Boolean available;
 
-    //private User owner;
     private String authorName;
 
     private NextBooking nextBooking; // дата и время ближайшего следующего бронирования
 
     private LastBooking lastBooking; // дата и время последнего бронирования
 
-    //private List<Comment> comments;
     private List<CommentOutputDto> comments;
 
 }

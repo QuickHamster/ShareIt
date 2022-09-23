@@ -1,6 +1,6 @@
 package ru.practicum.shareit.exception;
 
-public class UnavailableException extends RuntimeException{
+public class UnavailableException extends RuntimeException {
 
 
     public UnavailableException() {
@@ -19,7 +19,7 @@ public class UnavailableException extends RuntimeException{
     }
 
     public UnavailableException(String message, Throwable cause, boolean enableSuppression,
-                               boolean writableStackTrace) {
+                                boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 }

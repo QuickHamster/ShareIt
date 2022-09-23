@@ -2,7 +2,6 @@ package ru.practicum.shareit.booking.service;
 
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.booking.BookingMapper;
-import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.dto.BookingInputDto;
 import ru.practicum.shareit.booking.dto.BookingOutputDto;
 import ru.practicum.shareit.booking.model.Booking;
@@ -11,14 +10,12 @@ import ru.practicum.shareit.booking.model.BookingStatus;
 import ru.practicum.shareit.booking.repo.BookingRepository;
 import ru.practicum.shareit.exception.IncorrectStatusException;
 import ru.practicum.shareit.exception.UnavailableException;
-import ru.practicum.shareit.exception.ValidationException;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.repo.ItemRepository;
 import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.repo.UserRepository;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -30,7 +27,9 @@ public class BookingServiceImpl implements BookingService {
     private final UserRepository userRepository;
     private final ItemRepository itemRepository;
 
-    public BookingServiceImpl(BookingRepository bookingRepository, UserRepository userRepository, ItemRepository itemRepository) {
+    public BookingServiceImpl(BookingRepository bookingRepository,
+                              UserRepository userRepository,
+                              ItemRepository itemRepository) {
         this.bookingRepository = bookingRepository;
         this.userRepository = userRepository;
         this.itemRepository = itemRepository;
@@ -38,7 +37,6 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public List<Booking> getAll() {
-
         return bookingRepository.findAll();
     }
 
@@ -51,7 +49,7 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public BookingOutputDto add(long userId, BookingInputDto bookingInputDto) {
         if (bookingInputDto.getEnd().isBefore(bookingInputDto.getStart())) {
-            throw new UnavailableException(String.format("Время окончания не может быть раньше начала бронирования."));
+            throw new UnavailableException("Время окончания не может быть раньше начала бронирования.");
         }
         Booking booking = new Booking();
         booking.setStatus(BookingStatus.WAITING);
@@ -62,26 +60,17 @@ public class BookingServiceImpl implements BookingService {
             throw new NotFoundException(String.format("Вещь с id %x не найдена.", bookingInputDto.getItemId()));
         }
         if (!item.get().isAvailable()) {
-            throw new UnavailableException(String.format("Вещь с id %x недоступна для бронирования.", item.get().getId()));
+            throw new UnavailableException(String.format("Вещь с id %x недоступна для бронирования.",
+                    item.get().getId()));
         }
         booking.setItem(item.orElseThrow(NotFoundException::new));
         if (booking.getItem().getOwner().getId().equals(userId)) {
-            throw new NotFoundException(String.format("ХЗ."));
+            throw new NotFoundException(String.format("Вещь не принадлежит пользователю id = %x.", userId));
         }
         booking.setEnd(bookingInputDto.getEnd());
         booking.setStart(bookingInputDto.getStart());
         booking = bookingRepository.save(booking);
         return BookingMapper.toBookingOutputDto(booking);
-    }
-
-    @Override
-    public BookingDto change(BookingDto bookingDto, Long id) {
-        return null;
-    }
-
-    @Override
-    public BookingDto findById(long id) {
-        return null;
     }
 
     @Override
@@ -100,7 +89,7 @@ public class BookingServiceImpl implements BookingService {
         if (booking.get().getStatus().equals(BookingStatus.APPROVED)) {
             throw new UnavailableException(String.format("Бронирование с id = %x уже подтверждено.", bookingId));
         }
-        if (!booking.get().getItem().getOwner().getId().equals(userId))  {
+        if (!booking.get().getItem().getOwner().getId().equals(userId)) {
             throw new NotFoundException(String.format("Пользователь с id = %x не является владельцем.", userId));
         }
         if (approved) {
@@ -131,7 +120,8 @@ public class BookingServiceImpl implements BookingService {
 
             return BookingMapper.toBookingOutputDto(booking.get());
         } else
-            throw new NotFoundException(String.format("Пользователь с id = %x не является автором/владельцем вещи.", userId));
+            throw new NotFoundException(String.format("Пользователь с id = %x не является автором/владельцем вещи.",
+                    userId));
     }
 
     // Получение списка всех бронирований текущего пользователя
@@ -149,9 +139,7 @@ public class BookingServiceImpl implements BookingService {
             case CURRENT:
                 return bookingRepository.getBookingsByStateCurrent(userId, LocalDateTime.now());
             case PAST:
-                LocalDateTime localDateTime = LocalDateTime.now();
-                List<Booking> bookingList = bookingRepository.getBookingsByStatePast(userId, localDateTime);
-                return bookingList;
+                return bookingRepository.getBookingsByStatePast(userId, LocalDateTime.now());
             case REJECTED:
                 return bookingRepository.getBookingsByState(userId, BookingStatus.REJECTED);
             case WAITING:
@@ -159,11 +147,6 @@ public class BookingServiceImpl implements BookingService {
             default:
                 throw new IncorrectStatusException(String.format("Unknown state: %s", state));
         }
-    }
-
-    @Override
-    public List<Booking> getItemBookings(long userId, BookingState state) {
-        return null;
     }
 
     // Получение списка бронирований для всех вещей текущего пользователя

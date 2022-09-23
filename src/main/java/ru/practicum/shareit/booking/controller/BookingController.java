@@ -3,7 +3,6 @@ package ru.practicum.shareit.booking.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.dto.BookingInputDto;
 import ru.practicum.shareit.booking.dto.BookingOutputDto;
 import ru.practicum.shareit.booking.model.Booking;
@@ -51,7 +50,7 @@ public class BookingController {
     // Может быть выполнено либо автором бронирования, либо владельцем вещи, к которой относится бронирование
     // GET /bookings/{bookingId}
     @GetMapping(path = "/{bookingId}")
-    public BookingOutputDto fingBooking(@RequestHeader(X_HEADER) long userId,
+    public BookingOutputDto findBooking(@RequestHeader(X_HEADER) long userId,
                                         @PathVariable long bookingId) {
         log.info("Поиск бронирования: {}", bookingId);
         return bookingService.findBooking(userId, bookingId);

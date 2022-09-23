@@ -28,27 +28,15 @@ public class ItemServiceImpl implements ItemService {
     private final BookingRepository bookingRepository;
     private final CommentRepository commentRepository;
 
-    public ItemServiceImpl(ItemRepository itemRepository, UserRepository userRepository, BookingRepository bookingRepository, CommentRepository commentRepository) {
+    public ItemServiceImpl(ItemRepository itemRepository,
+                           UserRepository userRepository,
+                           BookingRepository bookingRepository,
+                           CommentRepository commentRepository) {
         this.itemRepository = itemRepository;
         this.userRepository = userRepository;
         this.bookingRepository = bookingRepository;
         this.commentRepository = commentRepository;
     }
-
-    //private TreeSet<Task> sortTasks = new TreeSet<Task>(new BookingComparator()); // сортированные задачи и подзадачи
-
-   /* private class BookingComparator implements Comparator<ItemOutputDto> {
-
-        public int compare(ItemOutputDto i1, ItemOutputDto i2) {
-            if ((i1 == null) || (i2 == null)) {
-                return 0;
-            } else if (i1.getId() == null) {
-                return 1;
-            } else if (i2.getId() == null) {
-                return -1;
-            } else return (i1.getId() > i2.getId()) ? 1 : -1;
-        }
-    }*/
 
     @Override
     public List<ItemOutputDto> getAllItems(long userId) {
@@ -75,10 +63,6 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemDto addItem(long userId, ItemDto itemDto) {
-       /* userRepository.findAll().stream()
-                .filter(p -> p.getId().equals(userId))
-                .findFirst()
-                .orElseThrow(() -> new NotFoundException(String.format("Пользователь с id %d не существует.", userId)));*/
         Optional<User> user = userRepository.findById(userId);
         if (user.isPresent()) {
             itemDto.setOwner(user.get());
@@ -130,7 +114,6 @@ public class ItemServiceImpl implements ItemService {
         if (user.isEmpty()) {
             throw new NotFoundException(String.format("Пользователь # %d не найден.", userId));
         }
-        //List<Comment> comments = commentRepository.findCommentsByAuthorAndItem(userId, id);
         List<Comment> comments = commentRepository.findCommentsByItem(id);
         List<CommentOutputDto> commentOutputDto = new ArrayList<>();
         if (!comments.isEmpty()) {
@@ -143,11 +126,13 @@ public class ItemServiceImpl implements ItemService {
             Optional<Booking> bookingNext = bookingRepository.findFirstByItemOrderByEndDesc(item.get());
             Optional<Booking> bookingLast = bookingRepository.findFirstByItemOrderByStartAsc(item.get());
             if (bookingLast.isPresent()) {
-                LastBooking lastBooking = new LastBooking(bookingLast.get().getId(), bookingLast.get().getBooker().getId());
+                LastBooking lastBooking = new LastBooking(bookingLast.get().getId(),
+                        bookingLast.get().getBooker().getId());
                 itemCommentsOutputDto.setLastBooking(lastBooking);
             }
             if (bookingNext.isPresent()) {
-                NextBooking nextBooking = new NextBooking(bookingNext.get().getId(), bookingNext.get().getBooker().getId());
+                NextBooking nextBooking = new NextBooking(bookingNext.get().getId(),
+                        bookingNext.get().getBooker().getId());
                 itemCommentsOutputDto.setNextBooking(nextBooking);
             }
         }
@@ -204,19 +189,9 @@ public class ItemServiceImpl implements ItemService {
             throw new UnavailableException(
                     String.format("Пользователь с id %d не брал в аренду вещь id = %d.", userId, itemId));
         }
-               /* .orElseThrow(() -> new UnavailableException(
-                        String.format("Пользователь с id %d не брал в аренду вещь id = %d.", userId, itemId)));
-        /*bookingRepository
-                .findBookingByBookerAfterAndEnd(user.get(), LocalDateTime.now()).stream()
-                .filter(p -> p.getItem().equals(itemId))
-                .findFirst()
-                .orElseThrow(() -> new UnavailableException(
-                        String.format("Пользователь с id %d не брал в аренду вещь id = %d.", userId, itemId)));*/
 
         comment.setCreated(LocalDate.now());
         comment.setText(commentInputDto.getText());
-
-        //commentRepository.save(comment);
 
         return ItemMapper.toCommentOutputDto(commentRepository.save(comment));
     }
