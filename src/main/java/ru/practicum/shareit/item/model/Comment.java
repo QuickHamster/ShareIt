@@ -32,5 +32,7 @@ public class Comment {
     @JoinColumn(name = "author_id")
     private User author; // автор комментария
 
+    //private String authorName;
+
     private LocalDate created; // дата создания комментария
 }

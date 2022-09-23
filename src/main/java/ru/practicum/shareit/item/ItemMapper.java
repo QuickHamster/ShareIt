@@ -7,7 +7,10 @@ import ru.practicum.shareit.item.dto.ItemOutputDto;
 import ru.practicum.shareit.item.model.Comment;
 import ru.practicum.shareit.item.model.Item;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class ItemMapper {
 
@@ -34,16 +37,16 @@ public class ItemMapper {
         );
     }
 
-    public static ItemCommentsOutputDto toItemCommentsOutputDto(Item item, Comment comment) {
+    public static ItemCommentsOutputDto toItemCommentsOutputDto(Item item, List<Comment> comment) {
         return new ItemCommentsOutputDto(
                 item.getId(),
                 item.getName(),
                 item.getDescription(),
                 item.isAvailable(),
-                item.getOwner(),
+                item.getOwner().getName(),
                 null,
                 null,
-                comment.getText()
+                new ArrayList<>(comment)
         );
     }
 
