@@ -1,4 +1,4 @@
-DROP TABLE comments, bookings, items, requests, users;
+DROP TABLE IF EXISTS comments, bookings, items, requests, users;
 DROP type status_enum;
 
 CREATE TABLE IF NOT EXISTS users
