@@ -37,7 +37,7 @@ public class ItemMapper {
         );
     }
 
-    public static ItemCommentsOutputDto toItemCommentsOutputDto(Item item, List<Comment> comment) {
+    public static ItemCommentsOutputDto toItemCommentsOutputDto(Item item, List<CommentOutputDto> commentOutputDto) {
         return new ItemCommentsOutputDto(
                 item.getId(),
                 item.getName(),
@@ -46,7 +46,8 @@ public class ItemMapper {
                 item.getOwner().getName(),
                 null,
                 null,
-                new ArrayList<>(comment)
+                new ArrayList<>(commentOutputDto) {
+                }
         );
     }
 

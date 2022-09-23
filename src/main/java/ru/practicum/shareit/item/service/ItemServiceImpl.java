@@ -75,11 +75,14 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemDto addItem(long userId, ItemDto itemDto) {
-        userRepository.findAll().stream()
+       /* userRepository.findAll().stream()
                 .filter(p -> p.getId().equals(userId))
                 .findFirst()
-                .orElseThrow(() -> new NotFoundException(String.format("Пользователь с id %d не существует.", userId)));
-        itemDto.setOwner(userRepository.findById(userId).get());
+                .orElseThrow(() -> new NotFoundException(String.format("Пользователь с id %d не существует.", userId)));*/
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isPresent()) {
+            itemDto.setOwner(user.get());
+        } else throw new NotFoundException(String.format("Пользователь с id %d не существует.", userId));
         return ItemMapper.toItemDto(itemRepository.save(ItemMapper.toItem(itemDto)));
     }
 
@@ -93,25 +96,28 @@ public class ItemServiceImpl implements ItemService {
 
         Optional<Item> item = itemRepository.findById(id);
 
-        if (!item.get().getOwner().getId().equals(userId)) {
-            throw new NotFoundException(String.format("Вещь не принадлежит пользователю # %d .", userId));
-        }
+        if (item.isPresent()) {
 
-        if (StringUtils.hasLength(itemDto.getName())) {
-            item.get().setName(itemDto.getName());
-        }
+            if (!item.get().getOwner().getId().equals(userId)) {
+                throw new NotFoundException(String.format("Вещь не принадлежит пользователю # %d .", userId));
+            }
 
-        if (StringUtils.hasLength(itemDto.getDescription())) {
-            item.get().setDescription(itemDto.getDescription());
-        }
+            if (StringUtils.hasLength(itemDto.getName())) {
+                item.get().setName(itemDto.getName());
+            }
 
-        if (itemDto.getAvailable() != null && !itemDto.getAvailable().equals(item.get().getAvailable())) {
-            item.get().setAvailable(itemDto.getAvailable());
-        }
+            if (StringUtils.hasLength(itemDto.getDescription())) {
+                item.get().setDescription(itemDto.getDescription());
+            }
 
-        item = Optional.of(itemRepository.save(item.get()));
+            if (itemDto.getAvailable() != null && !itemDto.getAvailable().equals(item.get().getAvailable())) {
+                item.get().setAvailable(itemDto.getAvailable());
+            }
 
-        return ItemMapper.toItemDto(item.get());
+            item = Optional.of(itemRepository.save(item.get()));
+
+            return ItemMapper.toItemDto(item.get());
+        } else throw new NotFoundException(String.format("Вещи с id %x не существует.", id));
     }
 
     @Override
@@ -124,9 +130,15 @@ public class ItemServiceImpl implements ItemService {
         if (user.isEmpty()) {
             throw new NotFoundException(String.format("Пользователь # %d не найден.", userId));
         }
-        List<Comment> comments = commentRepository.findCommentsByAuthorAndItem(userId, id);
-        //List<Booking> bookingsItem = bookingRepository.getBookingsByItem(id);
-        ItemCommentsOutputDto itemCommentsOutputDto = ItemMapper.toItemCommentsOutputDto(item.get(), comments);
+        //List<Comment> comments = commentRepository.findCommentsByAuthorAndItem(userId, id);
+        List<Comment> comments = commentRepository.findCommentsByItem(id);
+        List<CommentOutputDto> commentOutputDto = new ArrayList<>();
+        if (!comments.isEmpty()) {
+            for (Comment comment : comments) {
+                commentOutputDto.add(ItemMapper.toCommentOutputDto(comment));
+            }
+        }
+        ItemCommentsOutputDto itemCommentsOutputDto = ItemMapper.toItemCommentsOutputDto(item.get(), commentOutputDto);
         if (item.get().getOwner().getId().equals(userId)) {
             Optional<Booking> bookingNext = bookingRepository.findFirstByItemOrderByEndDesc(item.get());
             Optional<Booking> bookingLast = bookingRepository.findFirstByItemOrderByStartAsc(item.get());
@@ -139,9 +151,7 @@ public class ItemServiceImpl implements ItemService {
                 itemCommentsOutputDto.setNextBooking(nextBooking);
             }
         }
-        if (!comments.isEmpty()) {
-            itemCommentsOutputDto.setComments(comments);
-        }
+
         return itemCommentsOutputDto;
     }
 

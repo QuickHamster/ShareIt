@@ -37,7 +37,8 @@ public class ItemCommentsOutputDto {
 
     private LastBooking lastBooking; // дата и время последнего бронирования
 
-    private List<Comment> comments;
+    //private List<Comment> comments;
+    private List<CommentOutputDto> comments;
 
 }
 
