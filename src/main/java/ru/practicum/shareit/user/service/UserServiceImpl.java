@@ -38,34 +38,30 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto changeUser(UserDto userDto, Long id) {
         Optional<User> user = userRepository.findById(id);
+        validationUser(user, id);
 
-        if (user.isPresent()) {
+        if (StringUtils.hasLength(userDto.getName())) {
+            user.get().setName(userDto.getName());
+        }
 
-            if (StringUtils.hasLength(userDto.getName())) {
-                user.get().setName(userDto.getName());
-            }
+        if (StringUtils.hasLength(userDto.getEmail())) {
+            userRepository.findAll().forEach(existUser -> {
+                if (existUser.getEmail().equals(userDto.getEmail()))
+                    throw new ValidationException(String.format("Пользователь с email %s уже существует.",
+                            userDto.getEmail()));
+            });
+            user.get().setEmail(userDto.getEmail());
+        }
 
-            if (StringUtils.hasLength(userDto.getEmail())) {
-                userRepository.findAll().forEach(existUser -> {
-                    if (existUser.getEmail().equals(userDto.getEmail()))
-                        throw new ValidationException(String.format("Пользователь с email %s уже существует.",
-                                userDto.getEmail()));
-                });
-                user.get().setEmail(userDto.getEmail());
-            }
+        user = Optional.of(userRepository.save(user.get()));
 
-            user = Optional.of(userRepository.save(user.get()));
-
-            return UserMapper.toUserDto(user.get());
-        } else throw new NotFoundException(String.format("Пользователь с id %x не существует.", id));
+        return UserMapper.toUserDto(user.get());
     }
 
     @Override
     public UserDto findUserById(long id) {
         Optional<User> user = userRepository.findById(id);
-        if (user.isEmpty()) {
-            throw new NotFoundException(String.format("Пользователь с id %x не существует.", id));
-        }
+        validationUser(user, id);
         return UserMapper.toUserDto(user.get());
     }
 
@@ -73,5 +69,11 @@ public class UserServiceImpl implements UserService {
     public long deleteUser(long id) {
         userRepository.deleteById(id);
         return id;
+    }
+
+    private void validationUser(Optional<User> user, long userId) {
+        if (user.isEmpty()) {
+            throw new NotFoundException(String.format("Пользователь с id = %x не существует.", userId));
+        }
     }
 }

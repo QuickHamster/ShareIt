@@ -53,17 +53,19 @@ public class BookingServiceImpl implements BookingService {
         }
         Booking booking = new Booking();
         booking.setStatus(BookingStatus.WAITING);
+
         Optional<User> user = userRepository.findById(userId);
-        booking.setBooker(user.orElseThrow(NotFoundException::new));
+        validationUser(user, userId);
+        booking.setBooker(user.get());
+
         Optional<Item> item = itemRepository.findById(bookingInputDto.getItemId());
-        if (item.isEmpty()) {
-            throw new NotFoundException(String.format("Вещь с id %x не найдена.", bookingInputDto.getItemId()));
-        }
+        validationItem(item, bookingInputDto.getItemId());
+
         if (!item.get().isAvailable()) {
             throw new UnavailableException(String.format("Вещь с id %x недоступна для бронирования.",
                     item.get().getId()));
         }
-        booking.setItem(item.orElseThrow(NotFoundException::new));
+        booking.setItem(item.get());
         if (booking.getItem().getOwner().getId().equals(userId)) {
             throw new NotFoundException(String.format("Вещь не принадлежит пользователю id = %x.", userId));
         }
@@ -83,9 +85,7 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public BookingOutputDto approvedBooking(long userId, long bookingId, boolean approved) {
         Optional<Booking> booking = bookingRepository.findById(bookingId);
-        if (booking.isEmpty()) {
-            throw new NotFoundException(String.format("Бронирование с id = %x не существует.", bookingId));
-        }
+        validationBooking(booking, bookingId);
         if (booking.get().getStatus().equals(BookingStatus.APPROVED)) {
             throw new UnavailableException(String.format("Бронирование с id = %x уже подтверждено.", bookingId));
         }
@@ -106,15 +106,11 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public BookingOutputDto findBooking(long userId, long bookingId) {
         Optional<Booking> booking = bookingRepository.findById(bookingId);
-        if (booking.isEmpty()) {
-            throw new NotFoundException(String.format("Бронирование с id = %x не существует.", bookingId));
-        }
+        validationBooking(booking, bookingId);
 
         long itemId = booking.get().getItem().getId();
         Optional<Item> item = itemRepository.findById(itemId);
-        if (item.isEmpty()) {
-            throw new NotFoundException(String.format("Вещь с id = %x не существует.", itemId));
-        }
+        validationItem(item, itemId);
 
         if (booking.get().getBooker().getId().equals(userId) || item.get().getOwner().getId().equals(userId)) {
 
@@ -128,9 +124,8 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public List<Booking> getUserBookings(long userId, BookingState state) {
         Optional<User> user = userRepository.findById(userId);
-        if (user.isEmpty()) {
-            throw new NotFoundException(String.format("Пользователь с id = %x не существует.", userId));
-        }
+        validationUser(user, userId);
+
         switch (state) {
             case ALL:
                 return bookingRepository.getAllBookings(userId);
@@ -157,9 +152,8 @@ public class BookingServiceImpl implements BookingService {
             throw new NotFoundException(String.format("У пользователя с id = %x не существует вещей.", userId));
         }
         Optional<User> user = userRepository.findById(userId);
-        if (user.isEmpty()) {
-            throw new NotFoundException(String.format("Пользователь с id = %x не существует.", userId));
-        }
+        validationUser(user, userId);
+
         switch (state) {
             case ALL:
                 return bookingRepository.getBookingsForAllItemsUser(userId);
@@ -175,6 +169,24 @@ public class BookingServiceImpl implements BookingService {
                 return bookingRepository.getBookingsForAllItemsUserByState(userId, BookingStatus.WAITING);
             default:
                 throw new IncorrectStatusException(String.format("Unknown state: %s", state));
+        }
+    }
+
+    private void validationUser(Optional<User> user, long userId) {
+        if (user.isEmpty()) {
+            throw new NotFoundException(String.format("Пользователь с id = %x не существует.", userId));
+        }
+    }
+
+    private void validationItem(Optional<Item> item, long itemId) {
+        if (item.isEmpty()) {
+            throw new NotFoundException(String.format("Вещь с id = %x не существует.", itemId));
+        }
+    }
+
+    private void validationBooking(Optional<Booking> booking, long bookingId) {
+        if (booking.isEmpty()) {
+            throw new NotFoundException(String.format("Бронирование с id = %x не существует.", bookingId));
         }
     }
 }

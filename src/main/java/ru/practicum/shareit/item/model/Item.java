@@ -6,7 +6,6 @@ import ru.practicum.shareit.user.model.User;
 
 import javax.persistence.*;
 
-//@Data // Аннотация  добавит геттеры и сеттеры, а также методы toString(), equals(User other) и hashCode()
 @AllArgsConstructor // будет сгенерирован конструктор с одним параметром для каждого поля класса
 @NoArgsConstructor
 @Entity
@@ -25,13 +24,6 @@ public class Item {
     @JoinColumn(name = "owner_id")
     private User owner; // владелец вещи
 
-    /**
-     * // TODO . Будет реализовано в последующих спринтах
-     */
-    /*
-    @Column(name = "request_id")
-    private ItemRequest request; // если вещь была создана по запросу другого пользователя,
-                                 // то в этом поле будет храниться ссылка на соответствующий запрос*/
     public boolean isAvailable() {
         return available;
     }
