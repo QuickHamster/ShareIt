@@ -1,5 +1,6 @@
 package ru.practicum.shareit.booking.controller;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -10,11 +11,15 @@ import ru.practicum.shareit.booking.model.BookingState;
 import ru.practicum.shareit.booking.service.BookingService;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 @Slf4j
 @Validated
 @RestController
+@RequiredArgsConstructor
 @RequestMapping(path = "/bookings")
 public class BookingController {
 
@@ -22,9 +27,9 @@ public class BookingController {
 
     private static final String X_HEADER = "X-Sharer-User-Id";
 
-    public BookingController(BookingService bookingService) {
+   /* public BookingController(BookingService bookingService) {
         this.bookingService = bookingService;
-    }
+    }*/
 
     // Добавление бронирования. Запрос может быть создан любым пользователем, а затем подтверждён владельцем вещи.
     @PostMapping
@@ -61,9 +66,16 @@ public class BookingController {
     //GET /bookings?state={state}
     @GetMapping
     public List<Booking> getUserBookings(@RequestHeader(X_HEADER) long userId,
-                                         @RequestParam(defaultValue = "ALL") BookingState state) {
-        log.info("Получение списка бронирований для пользователя id = {}", userId);
-        return bookingService.getUserBookings(userId, state);
+                                         @RequestParam(defaultValue = "ALL") BookingState state,
+                                         @RequestParam(value = "from",
+                                                 required = false,
+                                                 defaultValue = "0") @PositiveOrZero int from,
+                                         @RequestParam(value = "size",
+                                                 required = false,
+                                                 defaultValue = "15") @Positive int size) {
+        log.info("Получение списка бронирований для пользователя id = {} начиная с " +
+                "элемента {} в количестве {}", userId, from, size);
+        return bookingService.getUserBookings(userId, state, from, size);
     }
 
     // Получение списка бронирований для всех вещей текущего пользователя.
@@ -71,8 +83,13 @@ public class BookingController {
     // GET /bookings/owner?state={state}
     @GetMapping(path = "/owner")
     public List<Booking> getBookingsForAllItemsUser(@RequestHeader(X_HEADER) long userId,
-                                                    @RequestParam(defaultValue = "ALL") BookingState state) {
-        log.info("Получение списка бронирований для всех вещей текущего пользователя id = {}", userId);
-        return bookingService.getBookingsForAllItemsUser(userId, state);
+                                                    @RequestParam(defaultValue = "ALL") BookingState state,
+                                                    @RequestParam(name = "from",
+                                                            defaultValue = "0") @Min(0) Integer from,
+                                                    @RequestParam(name = "size",
+                                                            defaultValue = "20") @Min(1) Integer size) {
+        log.info("Получение списка бронирований для всех вещей текущего пользователя id = {} " +
+                "начиная с элемента {} в количестве {}", userId, from, size);
+        return bookingService.getBookingsForAllItemsUser(userId, state, from, size);
     }
 }

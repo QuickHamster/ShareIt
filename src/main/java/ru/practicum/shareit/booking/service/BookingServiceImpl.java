@@ -1,5 +1,8 @@
 package ru.practicum.shareit.booking.service;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.booking.BookingMapper;
 import ru.practicum.shareit.booking.dto.BookingInputDto;
@@ -9,10 +12,10 @@ import ru.practicum.shareit.booking.model.BookingState;
 import ru.practicum.shareit.booking.model.BookingStatus;
 import ru.practicum.shareit.booking.repo.BookingRepository;
 import ru.practicum.shareit.exception.IncorrectStatusException;
+import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.exception.UnavailableException;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.repo.ItemRepository;
-import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.repo.UserRepository;
 
@@ -122,23 +125,24 @@ public class BookingServiceImpl implements BookingService {
 
     // Получение списка всех бронирований текущего пользователя
     @Override
-    public List<Booking> getUserBookings(long userId, BookingState state) {
+    public List<Booking> getUserBookings(long userId, BookingState state, int from, int size) {
         Optional<User> user = userRepository.findById(userId);
         validationUser(user, userId);
-
+        validationPageable(from, size);
+        Pageable pageable = PageRequest.of(from / size, size, Sort.by("end").descending());
         switch (state) {
             case ALL:
-                return bookingRepository.getAllBookings(userId);
+                return bookingRepository.getAllBookings(userId, pageable);
             case FUTURE:
-                return bookingRepository.getBookingsByStateFuture(userId, LocalDateTime.now());
+                return bookingRepository.getBookingsByStateFuture(userId, LocalDateTime.now(), pageable);
             case CURRENT:
-                return bookingRepository.getBookingsByStateCurrent(userId, LocalDateTime.now());
+                return bookingRepository.getBookingsByStateCurrent(userId, LocalDateTime.now(), pageable);
             case PAST:
-                return bookingRepository.getBookingsByStatePast(userId, LocalDateTime.now());
+                return bookingRepository.getBookingsByStatePast(userId, LocalDateTime.now(), pageable);
             case REJECTED:
-                return bookingRepository.getBookingsByState(userId, BookingStatus.REJECTED);
+                return bookingRepository.getBookingsByState(userId, BookingStatus.REJECTED, pageable);
             case WAITING:
-                return bookingRepository.getBookingsByState(userId, BookingStatus.WAITING);
+                return bookingRepository.getBookingsByState(userId, BookingStatus.WAITING, pageable);
             default:
                 throw new IncorrectStatusException(String.format("Unknown state: %s", state));
         }
@@ -146,27 +150,27 @@ public class BookingServiceImpl implements BookingService {
 
     // Получение списка бронирований для всех вещей текущего пользователя
     @Override
-    public List<Booking> getBookingsForAllItemsUser(long userId, BookingState state) {
+    public List<Booking> getBookingsForAllItemsUser(long userId, BookingState state, int from, int size) {
         List<Item> allById = itemRepository.findAllById(userId);
         if (allById.isEmpty()) {
             throw new NotFoundException(String.format("У пользователя с id = %x не существует вещей.", userId));
         }
         Optional<User> user = userRepository.findById(userId);
         validationUser(user, userId);
-
+        Pageable pageable = PageRequest.of(from / size, size, Sort.by("end").descending());
         switch (state) {
             case ALL:
-                return bookingRepository.getBookingsForAllItemsUser(userId);
+                return bookingRepository.getBookingsForAllItemsUser(userId, pageable);
             case FUTURE:
-                return bookingRepository.getBookingsForAllItemsUserByStateFuture(userId, LocalDateTime.now());
+                return bookingRepository.getBookingsForAllItemsUserByStateFuture(userId, LocalDateTime.now(), pageable);
             case CURRENT:
-                return bookingRepository.getBookingsForAllItemsUserByStateCurrent(userId, LocalDateTime.now());
+                return bookingRepository.getBookingsForAllItemsUserByStateCurrent(userId, LocalDateTime.now(), pageable);
             case PAST:
-                return bookingRepository.getBookingsForAllItemsUserByStatePast(userId, LocalDateTime.now());
+                return bookingRepository.getBookingsForAllItemsUserByStatePast(userId, LocalDateTime.now(), pageable);
             case REJECTED:
-                return bookingRepository.getBookingsForAllItemsUserByState(userId, BookingStatus.REJECTED);
+                return bookingRepository.getBookingsForAllItemsUserByState(userId, BookingStatus.REJECTED, pageable);
             case WAITING:
-                return bookingRepository.getBookingsForAllItemsUserByState(userId, BookingStatus.WAITING);
+                return bookingRepository.getBookingsForAllItemsUserByState(userId, BookingStatus.WAITING, pageable);
             default:
                 throw new IncorrectStatusException(String.format("Unknown state: %s", state));
         }
@@ -187,6 +191,15 @@ public class BookingServiceImpl implements BookingService {
     private void validationBooking(Optional<Booking> booking, long bookingId) {
         if (booking.isEmpty()) {
             throw new NotFoundException(String.format("Бронирование с id = %x не существует.", bookingId));
+        }
+    }
+
+    public void validationPageable(int from, int size) {
+        if (from < 0) {
+            throw new UnavailableException(String.format("Стартовый элемент выборки %d не может быть меньше 0.", from));
+        }
+        if (size < 1) {
+            throw new UnavailableException(String.format("Количество элементов выборки %d не может быть меньше 1.", size));
         }
     }
 }

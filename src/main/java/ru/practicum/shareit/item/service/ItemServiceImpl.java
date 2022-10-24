@@ -6,6 +6,7 @@ import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.booking.model.LastBooking;
 import ru.practicum.shareit.booking.model.NextBooking;
 import ru.practicum.shareit.booking.repo.BookingRepository;
+import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.exception.UnavailableException;
 import ru.practicum.shareit.item.ItemMapper;
 import ru.practicum.shareit.item.dto.*;
@@ -13,13 +14,14 @@ import ru.practicum.shareit.item.model.Comment;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.repo.CommentRepository;
 import ru.practicum.shareit.item.repo.ItemRepository;
-import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.repo.UserRepository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ItemServiceImpl implements ItemService {
