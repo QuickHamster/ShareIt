@@ -35,29 +35,4 @@ public class ItemRequestMapper {
                 items
         );
     }
-
-    /*public static ItemRequestInputDto toItemRequestInputDto(ItemRequest itemRequest) {
-        return new ItemRequestInputDto(
-                itemRequest.getDescription()
-        );
-    }
-
-    public static ItemRequestDto toItemRequestDto(ItemRequest itemRequest) {
-        return new ItemRequestDto(
-                itemRequest.getId(),
-                itemRequest.getDescription(),
-                itemRequest.getRequestor(),
-                itemRequest.getCreated()
-                );
-    }
-
-    public static ItemRequestAnswerDto toItemRequestAnswerDto(ItemRequest itemRequest) {
-        return new ItemRequestAnswerDto(
-                itemRequest.getId(),
-                itemRequest.getDescription(),
-                itemRequest.getCreated(),
-                (itemRequest.getItems() == null) ? null: itemRequest.getItems().stream()
-                        .map(ItemMapper::toItemDto).collect(Collectors.toSet())
-        );
-    }*/
 }

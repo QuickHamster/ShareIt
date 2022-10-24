@@ -27,8 +27,4 @@ public class ItemRequest {
     private User requestor; // пользователь, создавший запрос
 
     private LocalDateTime created; // дата и время создания запроса
-
-    /*@OneToMany(mappedBy = "requestId")
-    @ToString.Exclude
-    private Set<Item> items = new HashSet<>();*/
 }

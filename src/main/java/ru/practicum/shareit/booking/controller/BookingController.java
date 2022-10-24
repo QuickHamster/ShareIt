@@ -27,10 +27,6 @@ public class BookingController {
 
     private static final String X_HEADER = "X-Sharer-User-Id";
 
-   /* public BookingController(BookingService bookingService) {
-        this.bookingService = bookingService;
-    }*/
-
     // Добавление бронирования. Запрос может быть создан любым пользователем, а затем подтверждён владельцем вещи.
     @PostMapping
     public BookingOutputDto add(@RequestHeader(X_HEADER) long userId,
