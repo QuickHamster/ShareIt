@@ -81,7 +81,7 @@ public class ItemServiceImplTest {
     }
 
     @AfterEach
-    void AfterEach() {
+    void afterEach() {
         bookingService.deleteAll();
         itemService.deleteAll();
         userService.deleteAllUsers();
