@@ -49,7 +49,7 @@ public class ItemControllerTest {
     }
 
     @BeforeEach
-    void BeforeEach() {
+    void BeforeEach_1() {
         item = new Item();
         item.setId(1L);
         item.setName("username");

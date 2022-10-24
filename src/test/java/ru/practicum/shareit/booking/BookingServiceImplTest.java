@@ -54,7 +54,7 @@ public class BookingServiceImplTest {
     private final LocalDateTime endDT = LocalDateTime.now().plusDays(5);
 
     @BeforeEach
-    void BeforeEach() {
+    void BeforeEach_1() {
         owner = new User(0L, "owner", "owner@yandex.ru");
         booker = new User(0L, "booker", "booker@yandex.ru");
         thirdUser = new User(0L, "third", "third@yandex.ru");

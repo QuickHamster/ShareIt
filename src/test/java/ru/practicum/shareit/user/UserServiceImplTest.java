@@ -33,14 +33,14 @@ public class UserServiceImplTest {
     private UserDto userDtos;
 
     @BeforeEach
-    void beforeEach() {
+    void beforeEach_1() {
         userDto1 = new UserDto(0L, "user1", "user1@yandex.ru");
         userDto2 = new UserDto(0L, "user2", "user2@yandex.ru");
         userDtos = userService.addUser(userDto1);
     }
 
     @AfterEach
-    void AfterEach() {
+    void AfterEach_1() {
         userService.deleteAllUsers();
     }
 

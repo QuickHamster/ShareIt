@@ -50,7 +50,7 @@ public class ItemServiceImplTest {
 
 
     @BeforeEach
-    void beforeEach() {
+    void beforeEach_1() {
 
         userDto = new UserDto(0L, "user", "user@yandex.ru");
         userDtos = userService.addUser(userDto);
@@ -124,7 +124,7 @@ public class ItemServiceImplTest {
     void searchItems() {
         List<Item> items = itemService.searchItems("iTem");
         assertNotNull(items);
-        assertTrue(items.size()>0);
+        assertTrue(items.size() > 0);
     }
 
     @Test
