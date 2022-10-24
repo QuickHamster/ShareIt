@@ -51,7 +51,7 @@ public class BookingControllerTest {
     private static final String X_HEADER = "X-Sharer-User-Id";
 
     @BeforeEach
-    void BeforeEach_1() {
+    void beforeEach_1() {
         bookingInputDto = new BookingInputDto(LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(2), 1L);
         bookingOutputDto = new BookingOutputDto(1L, LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(2), null, null, BookingStatus.WAITING);
         bookingList = new ArrayList<>();

@@ -40,7 +40,7 @@ public class UserServiceImplTest {
     }
 
     @AfterEach
-    void AfterEach_1() {
+    void afterEach_1() {
         userService.deleteAllUsers();
     }
 

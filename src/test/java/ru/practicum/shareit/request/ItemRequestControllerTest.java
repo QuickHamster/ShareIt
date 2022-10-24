@@ -41,7 +41,7 @@ public class ItemRequestControllerTest {
     private static final String X_HEADER = "X-Sharer-User-Id";
 
     @BeforeEach
-    void BeforeEach_1() {
+    void beforeEach_1() {
         itemRequestDto = new ItemRequestDto(1L,"description", null, LocalDateTime.now());
     }
 
