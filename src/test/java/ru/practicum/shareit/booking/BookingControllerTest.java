@@ -59,7 +59,7 @@ public class BookingControllerTest {
 
     @Test
     void addBooking() throws Exception {
-        doReturn(bookingOutputDto).when(bookingService).add(anyLong(), any());
+        doReturn(bookingOutputDto).when(bookingService).add(anyLong(),any(BookingInputDto.class));
 
         mockMvc.perform(post("/bookings")
                         .content(mapper.writeValueAsString(bookingInputDto))

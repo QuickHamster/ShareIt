@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import ru.practicum.shareit.exception.NotFoundException;
+import ru.practicum.shareit.exception.ValidationException;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.repo.UserRepository;
@@ -64,10 +65,28 @@ public class UserServiceImplTest {
     }
 
     @Test
+    void changeUserIncorrectEmail() {
+        Throwable throwable = assertThrows(
+                ValidationException.class,
+                () -> userService.changeUser(userDto1, userDtos.getId())
+        );
+        assertNotNull(throwable.getMessage());
+    }
+
+    @Test
     void findUserById() {
         userDtos = userService.findUserById(userDtos.getId());
         assertNotNull(userDtos);
         assertEquals(userDto1, userDtos);
+    }
+
+    @Test
+    void findUserByIncorrectId() {
+        Throwable throwable = assertThrows(
+                NotFoundException.class,
+                () -> userService.findUserById(99L)
+        );
+        assertNotNull(throwable.getMessage());
     }
 
     @Test

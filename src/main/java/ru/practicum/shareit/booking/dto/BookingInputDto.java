@@ -18,4 +18,13 @@ public class BookingInputDto {
     private LocalDateTime end; // дата и время конца бронирования
 
     private Long itemId; // вещь, которую пользователь бронирует
+
+    @Override
+    public String toString() {
+        return "BookingInputDto{" +
+                "start=" + start +
+                ", end=" + end +
+                ", itemId=" + itemId +
+                '}';
+    }
 }

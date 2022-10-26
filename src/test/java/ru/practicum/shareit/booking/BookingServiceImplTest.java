@@ -12,7 +12,10 @@ import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.booking.model.BookingState;
 import ru.practicum.shareit.booking.model.BookingStatus;
 import ru.practicum.shareit.booking.service.BookingService;
+import ru.practicum.shareit.exception.IncorrectStatusException;
 import ru.practicum.shareit.exception.NotFoundException;
+import ru.practicum.shareit.exception.UnavailableException;
+import ru.practicum.shareit.exception.ValidationException;
 import ru.practicum.shareit.item.ItemMapper;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.Item;
@@ -82,6 +85,16 @@ public class BookingServiceImplTest {
     }
 
     @Test
+    void addBookingIncorrectDate() {
+        bookingInputDto = new BookingInputDto(endDT, startDT, item.getId());
+        Throwable throwable = assertThrows(
+                UnavailableException.class,
+                () -> bookingService.add(booker.getId(), bookingInputDto)
+        );
+        assertNotNull(throwable.getMessage());
+    }
+
+    @Test
     void approvedBooking() {
         bookingOutputDto.setStatus(BookingStatus.APPROVED);
         BookingOutputDto approvedBooking = bookingService.approvedBooking(owner.getId(), bookingOutputDto.getId(), true);
@@ -113,6 +126,17 @@ public class BookingServiceImplTest {
         List<Booking> bookingList = bookingService.getUserBookings(owner.getId(), BookingState.ALL, 0, 1);
         assertNotNull(bookingList);
     }
+
+    @Test
+    void getUserBookingsUNSUPPORTED_STATUS() {
+        Throwable throwable = assertThrows(
+                IncorrectStatusException.class,
+                () -> bookingService.getUserBookings(owner.getId(), BookingState.UNSUPPORTED_STATUS, 0, 1)
+        );
+        assertNotNull(throwable.getMessage());
+    }
+
+
 
     @Test
     void getUserBookingsFUTURE() {

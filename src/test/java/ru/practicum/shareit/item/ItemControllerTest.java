@@ -102,8 +102,26 @@ public class ItemControllerTest {
                 .andExpect(jsonPath("$.available", is(itemDto.getAvailable()), Boolean.class));
     }
 
+    /*@Test
+    void changeItem() throws Exception {
+        when(itemService.changeItem(any(ItemDto.class), anyLong(), anyLong()))
+                .thenReturn(itemDto);
+
+        mockMvc.perform(put("/items")
+                        .content(mapper.writeValueAsString(itemDto))
+                        .characterEncoding(StandardCharsets.UTF_8)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .header(X_HEADER, 1L))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", is(itemDto.getId()), Long.class))
+                .andExpect(jsonPath("$.name", is(itemDto.getName()), String.class))
+                .andExpect(jsonPath("$.description", is(itemDto.getDescription()), String.class))
+                .andExpect(jsonPath("$.available", is(itemDto.getAvailable()), Boolean.class));
+    }
+*/
     @Test
-    void updateItem() throws Exception {
+    void patchResource() throws Exception {
         when(itemService.changeItem(any(ItemDto.class), anyLong(), anyLong()))
                 .thenReturn(itemDto);
 
