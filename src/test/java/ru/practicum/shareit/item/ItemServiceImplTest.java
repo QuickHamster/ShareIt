@@ -114,6 +114,17 @@ public class ItemServiceImplTest {
     }
 
     @Test
+    void findItemByIdTestBooking() {
+        ItemCommentsOutputDto itemCommentsOutputDto = itemService.findItemById(userDtos.getId(), itemDtos.getId());
+        assertNotNull(itemCommentsOutputDto);
+        assertEquals(itemCommentsOutputDto.getId(), itemDtos.getId());
+        assertEquals(itemCommentsOutputDto.getName(), itemDtos.getName());
+        assertEquals(itemCommentsOutputDto.getDescription(), itemDtos.getDescription());
+        assertEquals(itemCommentsOutputDto.getAvailable(), itemDtos.getAvailable());
+        assertEquals(itemCommentsOutputDto.getAuthorName(), itemDtos.getOwner().getName());
+    }
+
+    @Test
     void deleteItem() {
         itemService.deleteItem(itemDtos.getId());
         NotFoundException ex = assertThrows(NotFoundException.class, () -> itemService.findItemById(userDto.getId(), itemDtos.getId()));
