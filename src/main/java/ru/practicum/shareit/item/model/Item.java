@@ -26,9 +26,6 @@ public class Item {
     @ManyToOne()
     @JoinColumn(name = "owner_id")
     private User owner; // владелец вещи
-    /*@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "request_id")
-    @ToString.Exclude*/
     private Long requestId; // id запроса, в ответ на который создаётся нужная вещь
 
     public boolean isAvailable() {

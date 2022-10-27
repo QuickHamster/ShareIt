@@ -31,14 +31,6 @@ public class ItemController {
         return itemService.addItem(userId, itemDto);
     }
 
-    /*@PutMapping
-    public ItemDto changeItem(@RequestHeader(X_HEADER) long userId,
-                              @Valid @RequestBody ItemDto itemDto,
-                              @RequestParam(required = false) Long requestId) {
-        log.info("Изменение вещи {}.", itemDto.getName());
-        return itemService.changeItem(itemDto, itemDto.getId(), userId);
-    }*/
-
     @DeleteMapping("/{id}")
     public Long remove(@PathVariable Long id) {
         log.info("Удаление вещи id = {}.", id);
@@ -67,7 +59,6 @@ public class ItemController {
         return itemService.searchItems(text);
     }
 
-    //POST /items/{itemId}/comment
     @PostMapping("/{itemId}/comment")
     public CommentOutputDto addCommentToItem(@PathVariable long itemId,
                                              @Valid @RequestBody CommentInputDto commentInputDto,

@@ -20,6 +20,5 @@ public class ItemRequestDto {
     @Size(max = 1024, message = "Description too long!")
     private String description; // текст запроса, содержащий описание требуемой вещи
     private User requestor; // пользователь, создавший запрос
-    //@FutureOrPresent(message = "Date cannot be in the past.")
     private LocalDateTime created = LocalDateTime.now(); // дата и время создания запроса
 }

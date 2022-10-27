@@ -52,14 +52,16 @@ public class BookingControllerTest {
 
     @BeforeEach
     void beforeEach_1() {
-        bookingInputDto = new BookingInputDto(LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(2), 1L);
-        bookingOutputDto = new BookingOutputDto(1L, LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(2), null, null, BookingStatus.WAITING);
+        bookingInputDto = new BookingInputDto(LocalDateTime.now().plusDays(1),
+                LocalDateTime.now().plusDays(2), 1L);
+        bookingOutputDto = new BookingOutputDto(1L, LocalDateTime.now().plusDays(1),
+                LocalDateTime.now().plusDays(2), null, null, BookingStatus.WAITING);
         bookingList = new ArrayList<>();
     }
 
     @Test
     void addBooking() throws Exception {
-        doReturn(bookingOutputDto).when(bookingService).add(anyLong(),any(BookingInputDto.class));
+        doReturn(bookingOutputDto).when(bookingService).add(anyLong(), any(BookingInputDto.class));
 
         mockMvc.perform(post("/bookings")
                         .content(mapper.writeValueAsString(bookingInputDto))
@@ -69,8 +71,10 @@ public class BookingControllerTest {
                         .header(X_HEADER, 1L))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(bookingOutputDto.getId()), Long.class))
-                .andExpect(jsonPath("$.start", startsWith(bookingOutputDto.getStart().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"))), String.class))
-                .andExpect(jsonPath("$.end", startsWith(bookingOutputDto.getEnd().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"))), String.class));
+                .andExpect(jsonPath("$.start", startsWith(bookingOutputDto.getStart()
+                        .format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"))), String.class))
+                .andExpect(jsonPath("$.end", startsWith(bookingOutputDto.getEnd()
+                        .format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"))), String.class));
     }
 
     @Test
@@ -88,7 +92,7 @@ public class BookingControllerTest {
 
     @Test
     void getUserBookings() throws Exception {
-        when(bookingService.getUserBookings(anyInt(),any(BookingState.class),anyInt(),anyInt()))
+        when(bookingService.getUserBookings(anyInt(), any(BookingState.class), anyInt(), anyInt()))
                 .thenReturn(bookingList);
 
         mockMvc.perform(get("/bookings?state=ALL")
@@ -101,7 +105,7 @@ public class BookingControllerTest {
 
     @Test
     void getBookingsForAllItemsUser() throws Exception {
-        when(bookingService.getBookingsForAllItemsUser(anyInt(),any(BookingState.class),anyInt(),anyInt()))
+        when(bookingService.getBookingsForAllItemsUser(anyInt(), any(BookingState.class), anyInt(), anyInt()))
                 .thenReturn(bookingList);
 
         mockMvc.perform(get("/bookings/owner")

@@ -28,8 +28,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class ItemRequestServiceImplTest {
 
     @Autowired
-    ItemRequestService itemRequestService;
-    @Autowired
+    private ItemRequestService itemRequestService;
+    private @Autowired
     UserService userService;
     private UserDto userDto1;
     private UserDto userDtos;
@@ -40,7 +40,8 @@ public class ItemRequestServiceImplTest {
     void beforeEach() {
         userDto1 = new UserDto(0L, "user1", "user1@yandex.ru");
         userDtos = userService.addUser(userDto1);
-        itemRequestDto = new ItemRequestDto(0L, "description", UserMapper.toUser(userDtos), LocalDateTime.now());
+        itemRequestDto = new ItemRequestDto(0L,
+                "description", UserMapper.toUser(userDtos), LocalDateTime.now());
         itemRequestDtos = itemRequestService.addItemRequest(userDtos.getId(), itemRequestDto);
     }
 
@@ -65,7 +66,8 @@ public class ItemRequestServiceImplTest {
 
     @Test
     void getItemRequestByRequestId() {
-        ItemRequestListItemDto fromService = itemRequestService.getItemRequestByRequestId(userDtos.getId(), itemRequestDtos.getId());
+        ItemRequestListItemDto fromService = itemRequestService
+                .getItemRequestByRequestId(userDtos.getId(), itemRequestDtos.getId());
         assertNotNull(fromService);
         assertEquals(itemRequestDtos.getId(), fromService.getId());
         assertEquals(itemRequestDtos.getDescription(), fromService.getDescription());

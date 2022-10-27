@@ -20,13 +20,13 @@ import static org.junit.jupiter.api.Assertions.*;
 public class UserServiceImplTest {
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
-    UserMapper  userMapper;
+    private UserMapper userMapper;
 
     private UserDto userDto1;
     private UserDto userDto2;

@@ -129,7 +129,7 @@ public class BookingServiceImpl implements BookingService {
         Optional<User> user = userRepository.findById(userId);
         validationUser(user, userId);
         validationPageable(from, size);
-        Pageable pageable = PageRequest.of(from / size, size, Sort.by("end").descending());
+        Pageable pageable = PageRequest.of(from / size, size, Sort.by("start").descending());
         switch (state) {
             case ALL:
                 return bookingRepository.getAllBookings(userId, pageable);
@@ -157,20 +157,26 @@ public class BookingServiceImpl implements BookingService {
         }
         Optional<User> user = userRepository.findById(userId);
         validationUser(user, userId);
-        Pageable pageable = PageRequest.of(from / size, size, Sort.by("end").descending());
+        Pageable pageable = PageRequest.of(from / size, size, Sort.by("start").descending());
         switch (state) {
             case ALL:
-                return bookingRepository.getBookingsForAllItemsUser(userId, pageable);
+                return bookingRepository
+                        .getBookingsForAllItemsUser(userId, pageable);
             case FUTURE:
-                return bookingRepository.getBookingsForAllItemsUserByStateFuture(userId, LocalDateTime.now(), pageable);
+                return bookingRepository
+                        .getBookingsForAllItemsUserByStateFuture(userId, LocalDateTime.now(), pageable);
             case CURRENT:
-                return bookingRepository.getBookingsForAllItemsUserByStateCurrent(userId, LocalDateTime.now(), pageable);
+                return bookingRepository
+                        .getBookingsForAllItemsUserByStateCurrent(userId, LocalDateTime.now(), pageable);
             case PAST:
-                return bookingRepository.getBookingsForAllItemsUserByStatePast(userId, LocalDateTime.now(), pageable);
+                return bookingRepository
+                        .getBookingsForAllItemsUserByStatePast(userId, LocalDateTime.now(), pageable);
             case REJECTED:
-                return bookingRepository.getBookingsForAllItemsUserByState(userId, BookingStatus.REJECTED, pageable);
+                return bookingRepository
+                        .getBookingsForAllItemsUserByState(userId, BookingStatus.REJECTED, pageable);
             case WAITING:
-                return bookingRepository.getBookingsForAllItemsUserByState(userId, BookingStatus.WAITING, pageable);
+                return bookingRepository
+                        .getBookingsForAllItemsUserByState(userId, BookingStatus.WAITING, pageable);
             default:
                 throw new IncorrectStatusException(String.format("Unknown state: %s", state));
         }
@@ -194,12 +200,14 @@ public class BookingServiceImpl implements BookingService {
         }
     }
 
-    public void validationPageable(int from, int size) {
+    private void validationPageable(int from, int size) {
         if (from < 0) {
-            throw new UnavailableException(String.format("Стартовый элемент выборки %d не может быть меньше 0.", from));
+            throw new UnavailableException(String
+                    .format("Стартовый элемент выборки %d не может быть меньше 0.", from));
         }
         if (size < 1) {
-            throw new UnavailableException(String.format("Количество элементов выборки %d не может быть меньше 1.", size));
+            throw new UnavailableException(String
+                    .format("Количество элементов выборки %d не может быть меньше 1.", size));
         }
     }
 }

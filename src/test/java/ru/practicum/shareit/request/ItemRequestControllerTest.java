@@ -42,7 +42,8 @@ public class ItemRequestControllerTest {
 
     @BeforeEach
     void beforeEach_1() {
-        itemRequestDto = new ItemRequestDto(1L,"description", null, LocalDateTime.now());
+        itemRequestDto = new ItemRequestDto(1L,"description",
+                null, LocalDateTime.now());
     }
 
     @Test
@@ -87,7 +88,8 @@ public class ItemRequestControllerTest {
                         .header(X_HEADER, itemRequestDto.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(itemRequestListItemDto.getId()), Long.class))
-                .andExpect(jsonPath("$.description", is(itemRequestListItemDto.getDescription()), String.class));
+                .andExpect(jsonPath("$.description", is(itemRequestListItemDto.getDescription()),
+                        String.class));
     }
 
     @Test

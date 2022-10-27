@@ -31,14 +31,15 @@ public class ItemMapperTest {
     void beforeEach() {
         User user = new User(1L, "user", "user@yandex.ru");
         item = new Item(1L, "itemName", "itemDescription", true, user, 2L);
-        commentOutputDto = new CommentOutputDto(1L, "textComment", item, "authorName", LocalDate.now());
+        commentOutputDto = new CommentOutputDto(1L,
+                "textComment", item, "authorName", LocalDate.now());
         itemDto = new ItemDto(1L, "itemName", "itemDescription", true, user, 2L);
         comment = new Comment(1L, "textComment", item, user, LocalDate.now());
     }
 
     @Test
     void toItemDto() {
-        ItemDto fromItemMapper = itemMapper.toItemDto(item);
+        ItemDto fromItemMapper = ItemMapper.toItemDto(item);
         assertNotNull(fromItemMapper);
         assertEquals(item.getId(), fromItemMapper.getId());
         assertEquals(item.getName(), fromItemMapper.getName());
@@ -50,7 +51,7 @@ public class ItemMapperTest {
 
     @Test
     void toItemOutputDto() {
-        ItemOutputDto fromItemMapper = itemMapper.toItemOutputDto(item);
+        ItemOutputDto fromItemMapper = ItemMapper.toItemOutputDto(item);
         assertNotNull(fromItemMapper);
         assertEquals(item.getId(), fromItemMapper.getId());
         assertEquals(item.getName(), fromItemMapper.getName());
@@ -64,7 +65,7 @@ public class ItemMapperTest {
     @Test
     void toItemCommentsOutputDto() {
         List<CommentOutputDto> listOutputDto = List.of(commentOutputDto);
-        ItemCommentsOutputDto fromItemMapper = itemMapper.toItemCommentsOutputDto(item, listOutputDto);
+        ItemCommentsOutputDto fromItemMapper = ItemMapper.toItemCommentsOutputDto(item, listOutputDto);
         assertNotNull(fromItemMapper);
         assertEquals(item.getId(), fromItemMapper.getId());
         assertEquals(item.getName(), fromItemMapper.getName());
@@ -78,7 +79,7 @@ public class ItemMapperTest {
 
     @Test
     void toItem() {
-        Item fromItemMapper = itemMapper.toItem(itemDto);
+        Item fromItemMapper = ItemMapper.toItem(itemDto);
         assertNotNull(fromItemMapper);
         assertEquals(itemDto.getId(), fromItemMapper.getId());
         assertEquals(itemDto.getName(), fromItemMapper.getName());
@@ -90,7 +91,7 @@ public class ItemMapperTest {
 
     @Test
     void toCommentOutputDto() {
-        CommentOutputDto fromItemMapper = itemMapper.toCommentOutputDto(comment);
+        CommentOutputDto fromItemMapper = ItemMapper.toCommentOutputDto(comment);
         assertNotNull(fromItemMapper);
         assertEquals(comment.getId(), fromItemMapper.getId());
         assertEquals(comment.getText(), fromItemMapper.getText());
@@ -102,7 +103,7 @@ public class ItemMapperTest {
     @Test
     void toListItemDto() {
         Collection<Item> items = List.of(item);
-        List<ItemDto> fromItemMapper = itemMapper.toListItemDto(items);
+        List<ItemDto> fromItemMapper = ItemMapper.toListItemDto(items);
         assertNotNull(fromItemMapper);
         assertEquals(items.stream().map(ItemMapper::toItemDto).collect(Collectors.toList()), fromItemMapper);
     }

@@ -23,7 +23,7 @@ public class UserMapperTest {
 
     @Test
     void toUser() {
-        User userFromDto = userMapper.toUser(userDto);
+        User userFromDto = UserMapper.toUser(userDto);
         userFromDto.setId(7L);
         assertNotNull(userFromDto);
         assertEquals(userDto.getId(), userFromDto.getId());
@@ -33,7 +33,7 @@ public class UserMapperTest {
 
     @Test
     void toUserDto() {
-        UserDto userDtoFromMapper = userMapper.toUserDto(user);
+        UserDto userDtoFromMapper = UserMapper.toUserDto(user);
         assertNotNull(userDtoFromMapper);
         assertEquals(user.getId(), userDtoFromMapper.getId());
         assertEquals(user.getName(), userDtoFromMapper.getName());

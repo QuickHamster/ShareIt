@@ -32,11 +32,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class ItemServiceImplTest {
     @Autowired
-    BookingService bookingService;
+    private BookingService bookingService;
     @Autowired
-    UserService userService;
+    private UserService userService;
     @Autowired
-    ItemService itemService;
+    private ItemService itemService;
 
     private ItemDto itemDto;
     private ItemDto itemDto1;
@@ -58,8 +58,10 @@ public class ItemServiceImplTest {
         userDto1 = new UserDto(0L, "user1", "user1@yandex.ru");
         userDtos1 = userService.addUser(userDto1);
 
-        itemDto = new ItemDto(0L, "itemName", "itemDescription", true, UserMapper.toUser(userDtos), null);
-        itemDto1 = new ItemDto(0L, "itemName1", "itemDescription1", true, UserMapper.toUser(userDtos1), null);
+        itemDto = new ItemDto(0L, "itemName", "itemDescription", true,
+                UserMapper.toUser(userDtos), null);
+        itemDto1 = new ItemDto(0L, "itemName1", "itemDescription1", true,
+                UserMapper.toUser(userDtos1), null);
         itemDtos = itemService.addItem(userDtos.getId(), itemDto);
         itemDtos1 = itemService.addItem(userDtos1.getId(), itemDto1);
 
@@ -69,13 +71,15 @@ public class ItemServiceImplTest {
     @Test
     void addCommentToItem() {
         // создание бронирования первого предмета
-        BookingInputDto bookingInputDto = new BookingInputDto(LocalDateTime.now(), LocalDateTime.now().plusNanos(5), itemDtos.getId());
+        BookingInputDto bookingInputDto = new BookingInputDto(LocalDateTime.now(),
+                LocalDateTime.now().plusNanos(5), itemDtos.getId());
         // добавление бронирования в БД: второй пользователь бронирует вещь первого пользователя
         BookingOutputDto bookingOutputDto = bookingService.add(userDtos1.getId(), bookingInputDto);
         // подтверждение бронирования: первый пользователь подтвеждает бронь первого предмета
         bookingService.approvedBooking(userDtos.getId(), bookingOutputDto.getId(), true);
         // добавление комментария: второй пользователь добавляет комментарий к первому предмету
-        CommentOutputDto commentOutputDto = itemService.addCommentToItem(userDtos1.getId(), itemDtos.getId(), commentInputDto);
+        CommentOutputDto commentOutputDto = itemService.addCommentToItem(userDtos1.getId(),
+                itemDtos.getId(), commentInputDto);
         assertNotNull(commentOutputDto);
         assertEquals(commentOutputDto.getText(), commentInputDto.getText());
     }
@@ -127,7 +131,8 @@ public class ItemServiceImplTest {
     @Test
     void deleteItem() {
         itemService.deleteItem(itemDtos.getId());
-        NotFoundException ex = assertThrows(NotFoundException.class, () -> itemService.findItemById(userDto.getId(), itemDtos.getId()));
+        NotFoundException ex = assertThrows(NotFoundException.class, () -> itemService
+                .findItemById(userDto.getId(), itemDtos.getId()));
         assertEquals(String.format("Вещь с id = %x не существует.", itemDtos.getId()), ex.getMessage());
     }
 

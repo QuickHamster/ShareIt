@@ -25,14 +25,17 @@ public class ItemRequestDtoTest {
         ItemRequestInputDto itemRequestInputDto = new ItemRequestInputDto("itemRequestDescription");
         var result = jsonIn.write(itemRequestInputDto);
         assertThat(result).hasJsonPath("$.description");
-        assertThat(result).extractingJsonPathStringValue("$.description").isEqualTo("itemRequestDescription");
+        assertThat(result).extractingJsonPathStringValue("$.description")
+                .isEqualTo("itemRequestDescription");
     }
 
     @Test
     void itemRequestAnswerDtoSerialize() throws Exception {
-        ItemRequestAnswerDto itemRequestAnswerDto  = new ItemRequestAnswerDto(1L,"itemRequestAnswerDescription", LocalDateTime.now());
+        ItemRequestAnswerDto itemRequestAnswerDto = new ItemRequestAnswerDto(1L,
+                "itemRequestAnswerDescription", LocalDateTime.now());
         var result = jsonOut.write(itemRequestAnswerDto);
         assertThat(result).hasJsonPath("$.description");
-        assertThat(result).extractingJsonPathStringValue("$.description").isEqualTo("itemRequestAnswerDescription");
+        assertThat(result).extractingJsonPathStringValue("$.description")
+                .isEqualTo("itemRequestAnswerDescription");
     }
 }

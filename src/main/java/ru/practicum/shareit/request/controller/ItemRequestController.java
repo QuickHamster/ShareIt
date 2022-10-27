@@ -12,7 +12,6 @@ import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 @Slf4j
-//@Validated
 @RestController
 @RequestMapping(path = "/requests")
 public class ItemRequestController {

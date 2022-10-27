@@ -27,7 +27,9 @@ public class ItemRequestServiceImpl implements ItemRequestService {
     private final ItemRepository itemRepository;
     private final UserRepository userRepository;
 
-    public ItemRequestServiceImpl(ItemRequestRepository itemRequestRepository, ItemRepository itemRepository, UserRepository userRepository) {
+    public ItemRequestServiceImpl(ItemRequestRepository itemRequestRepository,
+                                  ItemRepository itemRepository,
+                                  UserRepository userRepository) {
         this.itemRequestRepository = itemRequestRepository;
         this.itemRepository = itemRepository;
         this.userRepository = userRepository;
@@ -84,12 +86,14 @@ public class ItemRequestServiceImpl implements ItemRequestService {
         return itemRequest.get();
     }
 
-    public void validationPageable(int from, int size) {
+    private void validationPageable(int from, int size) {
         if (from < 0) {
-            throw new UnavailableException(String.format("Стартовый элемент выборки %d не может быть меньше 0.", from));
+            throw new UnavailableException(String
+                    .format("Стартовый элемент выборки %d не может быть меньше 0.", from));
         }
         if (size < 1) {
-            throw new UnavailableException(String.format("Количество элементов выборки %d не может быть меньше 1.", size));
+            throw new UnavailableException(String
+                    .format("Количество элементов выборки %d не может быть меньше 1.", size));
         }
     }
 }

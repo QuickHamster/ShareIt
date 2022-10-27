@@ -14,10 +14,8 @@ import java.util.Optional;
 
 @Repository
 public interface BookingRepository extends JpaRepository<Booking, Long> {
-
-    @Query(" select b from Booking b " +
-            "where b.booker.id = ?1 group by b.id order by b.start desc")
-    List<Booking> getAllBookings(long userId, Pageable pageable);
+    @Query(" select b from Booking b where b.booker.id = ?1 order by b.start DESC")
+    List<Booking> getAllBookings(Long ownerId, Pageable pageable);
 
     @Query(value = " select b from Booking b " +
             "where b.booker.id = ?1" +
@@ -37,7 +35,6 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     @Query(value = " select b from Booking b " +
             "where b.booker.id = ?1" +
             " and b.status = ?2")
-        //  group by b.id order by b.start desc
     List<Booking> getBookingsByState(long userId, BookingStatus bookingStatus, Pageable pageable);
 
     @Query(" select b from Booking b left join Item as i on b.item.id = i.id " +

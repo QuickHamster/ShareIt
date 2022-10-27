@@ -20,7 +20,8 @@ public class ItemDtoTest {
     @Test
     void testSerialize() throws Exception {
         User user = new User(1L, "user", "user@yandex.ru");
-        ItemDto itemDto = new ItemDto(1L, "itemName", "descriptionItem", true, user, 2L);
+        ItemDto itemDto = new ItemDto(1L,
+                "itemName", "descriptionItem", true, user, 2L);
         var result = json.write(itemDto);
         assertThat(result).hasJsonPath("$.id");
         assertThat(result).hasJsonPath("$.name");

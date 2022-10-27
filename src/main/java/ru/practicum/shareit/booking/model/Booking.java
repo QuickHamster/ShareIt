@@ -31,7 +31,6 @@ public class Booking {
     @JoinColumn(name = "item_id")
     private Item item; // вещь, которую пользователь бронирует
 
-
     @ManyToOne()
     @JoinColumn(name = "booker_id")
     private User booker; // пользователь, который осуществляет бронирование
