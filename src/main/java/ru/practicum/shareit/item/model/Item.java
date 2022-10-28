@@ -1,7 +1,10 @@
 package ru.practicum.shareit.item.model;
 
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import ru.practicum.shareit.user.model.User;
 
 import javax.persistence.*;
@@ -23,6 +26,7 @@ public class Item {
     @ManyToOne()
     @JoinColumn(name = "owner_id")
     private User owner; // владелец вещи
+    private Long requestId; // id запроса, в ответ на который создаётся нужная вещь
 
     public boolean isAvailable() {
         return available;

@@ -1,24 +1,22 @@
 package ru.practicum.shareit.item.controller;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.item.dto.*;
 import ru.practicum.shareit.item.model.Item;
-import ru.practicum.shareit.item.service.ItemServiceImpl;
+import ru.practicum.shareit.item.service.ItemService;
 
 import javax.validation.Valid;
 import java.util.List;
 
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/items")
 public class ItemController {
-    private final ItemServiceImpl itemService;
+    private final ItemService itemService;
     private static final String X_HEADER = "X-Sharer-User-Id";
-
-    public ItemController(ItemServiceImpl itemService) {
-        this.itemService = itemService;
-    }
 
     @GetMapping
     public List<ItemOutputDto> getAllItems(@RequestHeader(X_HEADER) long userId) {
@@ -31,14 +29,6 @@ public class ItemController {
                            @Valid @RequestBody ItemDto itemDto) {
         log.info("Добавляется вещь {}.", itemDto.getName());
         return itemService.addItem(userId, itemDto);
-    }
-
-    @PutMapping
-    public ItemDto changeItem(@RequestHeader(X_HEADER) long userId,
-                              @Valid @RequestBody ItemDto itemDto
-    ) {
-        log.info("Изменение вещи {}.", itemDto.getName());
-        return itemService.changeItem(itemDto, itemDto.getId(), userId);
     }
 
     @DeleteMapping("/{id}")
@@ -69,7 +59,6 @@ public class ItemController {
         return itemService.searchItems(text);
     }
 
-    //POST /items/{itemId}/comment
     @PostMapping("/{itemId}/comment")
     public CommentOutputDto addCommentToItem(@PathVariable long itemId,
                                              @Valid @RequestBody CommentInputDto commentInputDto,
