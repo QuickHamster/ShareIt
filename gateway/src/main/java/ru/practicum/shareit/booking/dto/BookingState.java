@@ -14,7 +14,9 @@ public enum BookingState {
 	// Отклоненные
 	REJECTED,
 	// Ожидающие подтверждения
-	WAITING;
+	WAITING,
+	// неподдерживаемый статус (для тестов Postman)
+	UNSUPPORTED_STATUS;
 
 	public static Optional<BookingState> from(String stringState) {
 		for (BookingState state : values()) {

@@ -55,7 +55,7 @@ public class ItemController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<Object> search(@NotBlank @RequestParam String text) {
+    public ResponseEntity<Object> search(@RequestParam String text) {
         log.info("Поиск вещи по вхождению строки: {}.", text);
         return itemClient.searchItems(text);
     }
@@ -66,5 +66,11 @@ public class ItemController {
                                                    @Positive @RequestHeader(X_HEADER) long userId) {
         log.info("Пользователем id = {} добавляется комметарий: {}, itemId = {}.", userId, commentInputDto.getText(), itemId);
         return itemClient.addCommentToItem(userId, itemId, commentInputDto);
+    }
+
+    @GetMapping
+    public ResponseEntity<Object> getAllItems(@Positive @RequestHeader(X_HEADER) long userId) {
+        log.info("Получение списка вещей пользователя id = {}.", userId);
+        return itemClient.getAllItems(userId);
     }
 }

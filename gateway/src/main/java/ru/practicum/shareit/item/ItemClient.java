@@ -11,8 +11,6 @@ import ru.practicum.shareit.client.BaseClient;
 import ru.practicum.shareit.item.dto.CommentInputDto;
 import ru.practicum.shareit.item.dto.ItemDto;
 
-import java.util.Map;
-
 @Service
 public class ItemClient extends BaseClient {
     private static final String API_PREFIX = "/items";
@@ -49,4 +47,10 @@ public class ItemClient extends BaseClient {
     public ResponseEntity<Object> addCommentToItem(long userId, long itemId, CommentInputDto commentDto) {
         return post("/" + itemId + "/comment", userId, commentDto);
     }
+
+    public ResponseEntity<Object> getAllItems(long userId) {
+        return get("", userId);
+    }
+
+
 }
