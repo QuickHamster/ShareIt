@@ -7,7 +7,6 @@ import lombok.Setter;
 import ru.practicum.shareit.user.model.User;
 
 import javax.persistence.*;
-import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
 @AllArgsConstructor // будет сгенерирован конструктор с одним параметром для каждого поля класса
@@ -21,7 +20,6 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; // уникальный идентификатор комментария
 
-    @Size(max = 1024, message = "Comment too long!")
     private String text; // содержимое комментария
 
     @ManyToOne()
