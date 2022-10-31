@@ -36,6 +36,7 @@ public class ItemClient extends BaseClient {
     public ResponseEntity<Object> findItemById(long userId, long itemId) {
         return get("/" + itemId, userId);
     }
+
     public ResponseEntity<Object> changeItem(ItemDto itemDto, long itemId, long userId) {
         return patch("/" + itemId, userId, itemDto);
     }
