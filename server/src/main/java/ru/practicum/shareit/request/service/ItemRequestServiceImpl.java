@@ -5,7 +5,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.exception.NotFoundException;
-import ru.practicum.shareit.exception.UnavailableException;
 import ru.practicum.shareit.item.ItemMapper;
 import ru.practicum.shareit.item.repo.ItemRepository;
 import ru.practicum.shareit.request.ItemRequestMapper;
