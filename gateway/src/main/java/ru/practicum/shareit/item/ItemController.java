@@ -2,6 +2,7 @@ package ru.practicum.shareit.item;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
@@ -55,14 +56,18 @@ public class ItemController {
     @GetMapping("/search")
     public ResponseEntity<Object> search(@RequestParam String text) {
         log.info("Поиск вещи по вхождению строки: {}.", text);
-        return itemClient.searchItems(text);
+        if (!text.isBlank()) {
+            return itemClient.searchItems(text);
+        } else return ResponseEntity.ok("[]");
+
     }
 
     @PostMapping("/{itemId}/comment")
     public ResponseEntity<Object> addCommentToItem(@Positive @PathVariable long itemId,
                                                    @Valid @RequestBody CommentInputDto commentInputDto,
                                                    @Positive @RequestHeader(X_HEADER) long userId) {
-        log.info("Пользователем id = {} добавляется комметарий: {}, itemId = {}.", userId, commentInputDto.getText(), itemId);
+        log.info("Пользователем id = {} добавляется комментарий: {}, itemId = {}.", userId, commentInputDto.getText(),
+                itemId);
         return itemClient.addCommentToItem(userId, itemId, commentInputDto);
     }
 

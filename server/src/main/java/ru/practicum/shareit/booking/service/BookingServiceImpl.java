@@ -51,9 +51,7 @@ public class BookingServiceImpl implements BookingService {
     // Добавление бронирования. Запрос может быть создан любым пользователем, а затем подтверждён владельцем вещи.
     @Override
     public BookingOutputDto add(long userId, BookingInputDto bookingInputDto) {
-        if (bookingInputDto.getEnd().isBefore(bookingInputDto.getStart())) {
-            throw new UnavailableException("Время окончания не может быть раньше начала бронирования.");
-        }
+
         Booking booking = new Booking();
         booking.setStatus(BookingStatus.WAITING);
 
@@ -128,7 +126,7 @@ public class BookingServiceImpl implements BookingService {
     public List<Booking> getUserBookings(long userId, BookingState state, int from, int size) {
         Optional<User> user = userRepository.findById(userId);
         validationUser(user, userId);
-        validationPageable(from, size);
+        //validationPageable(from, size);
         Pageable pageable = PageRequest.of(from / size, size, Sort.by("start").descending());
         switch (state) {
             case ALL:
@@ -197,17 +195,6 @@ public class BookingServiceImpl implements BookingService {
     private void validationBooking(Optional<Booking> booking, long bookingId) {
         if (booking.isEmpty()) {
             throw new NotFoundException(String.format("Бронирование с id = %x не существует.", bookingId));
-        }
-    }
-
-    private void validationPageable(int from, int size) {
-        if (from < 0) {
-            throw new UnavailableException(String
-                    .format("Стартовый элемент выборки %d не может быть меньше 0.", from));
-        }
-        if (size < 1) {
-            throw new UnavailableException(String
-                    .format("Количество элементов выборки %d не может быть меньше 1.", size));
         }
     }
 }

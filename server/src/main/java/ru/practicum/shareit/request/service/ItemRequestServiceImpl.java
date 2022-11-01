@@ -45,7 +45,7 @@ public class ItemRequestServiceImpl implements ItemRequestService {
     @Override
     public List<ItemRequestListItemDto> getAllRequests(long userId, int from, int size) {
         validationUser(userId);
-        validationPageable(from, size);
+        //validationPageable(from, size);
         Pageable pageable = PageRequest.of(from, size, Sort.by("created").descending());
         List<ItemRequest> itemRequests = itemRequestRepository.findOtherRequestor(userId, pageable);
         return itemRequests.stream().map(p -> ItemRequestMapper.toItemRequestListItemDto(p,
@@ -84,16 +84,5 @@ public class ItemRequestServiceImpl implements ItemRequestService {
             throw new NotFoundException(String.format("Запрос с id = %x не существует.", requestId));
         }
         return itemRequest.get();
-    }
-
-    private void validationPageable(int from, int size) {
-        if (from < 0) {
-            throw new UnavailableException(String
-                    .format("Стартовый элемент выборки %d не может быть меньше 0.", from));
-        }
-        if (size < 1) {
-            throw new UnavailableException(String
-                    .format("Количество элементов выборки %d не может быть меньше 1.", size));
-        }
     }
 }

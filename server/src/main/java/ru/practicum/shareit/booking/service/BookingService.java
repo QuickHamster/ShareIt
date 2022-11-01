@@ -23,6 +23,5 @@ public interface BookingService {
 
     List<Booking> getUserBookings(long userId, BookingState state, int from, int size);
 
-    // Получение списка бронирований для всех вещей текущего пользователя
     List<Booking> getBookingsForAllItemsUser(long userId, BookingState state, int from, int size);
 }

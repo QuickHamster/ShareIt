@@ -21,20 +21,11 @@ public class BookingClient extends BaseClient {
 
     @Autowired
     public BookingClient(@Value("${shareit-server.url}") String serverUrl, RestTemplateBuilder builder) {
-        super(
-                builder
-                        .uriTemplateHandler(new DefaultUriBuilderFactory(serverUrl + API_PREFIX))
-                        .requestFactory(HttpComponentsClientHttpRequestFactory::new)
-                        .build()
-        );
+        super(builder.uriTemplateHandler(new DefaultUriBuilderFactory(serverUrl + API_PREFIX)).requestFactory(HttpComponentsClientHttpRequestFactory::new).build());
     }
 
     public ResponseEntity<Object> getBookings(long userId, BookingState state, Integer from, Integer size) {
-        Map<String, Object> parameters = Map.of(
-                "state", state.name(),
-                "from", from,
-                "size", size
-        );
+        Map<String, Object> parameters = Map.of("state", state.name(), "from", from, "size", size);
         return get("?state={state}&from={from}&size={size}", userId, parameters);
     }
 
@@ -64,20 +55,24 @@ public class BookingClient extends BaseClient {
     }
 
     public ResponseEntity<Object> getUserBookings(long userId, BookingState state, Integer from, Integer size) {
-        Map<String, Object> parameters = Map.of(
-                "state", state.name(),
-                "from", from,
-                "size", size
-        );
+        Map<String, Object> parameters = Map.of("state", state.name(), "from", from, "size", size);
+        validationPageable(from, size);
         return get("?state={state}&from={from}&size={size}", userId, parameters);
     }
 
     public ResponseEntity<Object> getBookingsForAllItemsUser(long userId, BookingState state, Integer from, Integer size) {
-        Map<String, Object> parameters = Map.of(
-                "state", state.name(),
-                "from", from,
-                "size", size
-        );
+        Map<String, Object> parameters = Map.of("state", state.name(), "from", from, "size", size);
         return get("/owner?state={state}&from={from}&size={size}", userId, parameters);
+    }
+
+    private void validationPageable(int from, int size) {
+        if (from < 0) {
+            throw new UnavailableException(String
+                    .format("Стартовый элемент выборки %d не может быть меньше 0.", from));
+        }
+        if (size < 1) {
+            throw new UnavailableException(String
+                    .format("Количество элементов выборки %d не может быть меньше 1.", size));
+        }
     }
 }

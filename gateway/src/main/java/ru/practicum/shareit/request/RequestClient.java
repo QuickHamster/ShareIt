@@ -8,6 +8,7 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 import ru.practicum.shareit.client.BaseClient;
+import ru.practicum.shareit.exception.UnavailableException;
 import ru.practicum.shareit.request.dto.ItemRequestDto;
 
 import java.util.Map;
@@ -43,6 +44,18 @@ public class RequestClient extends BaseClient {
                 "from", from,
                 "size", size
         );
+        validationPageable(from, size);
         return get("/all/?from={from}&size={size}", userId, parameters);
+    }
+
+    private void validationPageable(int from, int size) {
+        if (from < 0) {
+            throw new UnavailableException(String
+                    .format("Стартовый элемент выборки %d не может быть меньше 0.", from));
+        }
+        if (size < 1) {
+            throw new UnavailableException(String
+                    .format("Количество элементов выборки %d не может быть меньше 1.", size));
+        }
     }
 }

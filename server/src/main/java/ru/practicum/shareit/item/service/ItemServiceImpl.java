@@ -154,9 +154,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<Item> searchItems(String text) {
-        if (!text.isBlank()) {
-            return itemRepository.searchItems(text);
-        } else return new ArrayList<>();
+        return itemRepository.searchItems(text);
     }
 
     @Override
