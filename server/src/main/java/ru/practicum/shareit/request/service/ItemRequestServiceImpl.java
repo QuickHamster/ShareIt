@@ -44,7 +44,6 @@ public class ItemRequestServiceImpl implements ItemRequestService {
     @Override
     public List<ItemRequestListItemDto> getAllRequests(long userId, int from, int size) {
         validationUser(userId);
-        //validationPageable(from, size);
         Pageable pageable = PageRequest.of(from, size, Sort.by("created").descending());
         List<ItemRequest> itemRequests = itemRequestRepository.findOtherRequestor(userId, pageable);
         return itemRequests.stream().map(p -> ItemRequestMapper.toItemRequestListItemDto(p,

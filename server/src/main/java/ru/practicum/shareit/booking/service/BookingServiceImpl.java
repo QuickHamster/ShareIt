@@ -126,7 +126,6 @@ public class BookingServiceImpl implements BookingService {
     public List<Booking> getUserBookings(long userId, BookingState state, int from, int size) {
         Optional<User> user = userRepository.findById(userId);
         validationUser(user, userId);
-        //validationPageable(from, size);
         Pageable pageable = PageRequest.of(from / size, size, Sort.by("start").descending());
         switch (state) {
             case ALL:
